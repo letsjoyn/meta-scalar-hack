@@ -452,6 +452,9 @@ class SupportOpsEnvironment(Environment):
             inbox_snapshot.append(
                 {
                     "ticket_id": ticket.ticket_id,
+                    "message": ticket.customer_message,
+                    "lat": ticket.lat,
+                    "lon": ticket.lon,
                     "submitted": rt["submitted"],
                     "predicted_team": rt["predicted_team"],
                     "predicted_priority": rt["predicted_priority"],

@@ -1,3 +1,4 @@
+import json
 import os
 
 try:
@@ -25,6 +26,55 @@ app = create_app(
     env_name="support_ops_env",
     max_concurrent_envs=2,
 )
+
+# ── Websocket and UI ─────────────────────────────────────────────────────
+
+from fastapi import WebSocket, WebSocketDisconnect
+from fastapi.staticfiles import StaticFiles
+import asyncio
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: str):
+        for connection in self.active_connections:
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            # We are just broadcasting, so we don't need to receive
+            await asyncio.sleep(1)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+# This will be used by the agent to push updates
+@app.post("/ui/update")
+async def post_ui_update(data: dict):
+    await manager.broadcast(json.dumps({"type": "update", "payload": data}))
+    return {"status": "ok"}
+
+# Mount the static files for the UI
+app.mount(
+    "/ui",
+    StaticFiles(directory=os.path.join(os.path.dirname(__file__), "ui"), html=True),
+    name="ui",
+)
+
+# ── Main ─────────────────────────────────────────────────────────────────
 
 
 def main(host: str = "0.0.0.0", port: int = 8000) -> None:

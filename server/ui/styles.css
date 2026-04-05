@@ -1,0 +1,104 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+#app {
+    display: flex;
+    height: 100vh;
+}
+
+#map {
+    flex-grow: 1;
+    height: 100%;
+}
+
+#sidebar {
+    width: 350px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #333;
+}
+
+h1 {
+    font-size: 24px;
+    margin-top: 0;
+    color: #f5f5f5;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+#metrics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.metric {
+    text-align: center;
+}
+
+.metric h2 {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.metric p {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0;
+    color: #4caf50;
+}
+
+#incidents h2 {
+    font-size: 18px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+#incident-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+}
+
+.incident {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+}
+
+.incident.high {
+    border-left: 3px solid #f44336;
+}
+
+.incident.urgent {
+    border-left: 3px solid #ff1744;
+    background-color: rgba(255, 23, 68, 0.08);
+}
+
+.incident.medium {
+    border-left: 3px solid #ff9800;
+}
+
+.incident.low {
+    border-left: 3px solid #4caf50;
+}
+
+.incident h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+
+.incident p {
+    margin: 0;
+    font-size: 14px;
+    color: #ccc;
+}
