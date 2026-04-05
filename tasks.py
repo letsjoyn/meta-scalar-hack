@@ -21,6 +21,9 @@ class TicketSpec:
     gold_team: str
     gold_priority: str
     required_reply_keywords: List[str]
+    lat: float
+    lon: float
+
 
 
 @dataclass(frozen=True)
@@ -45,6 +48,8 @@ _EASY_TICKETS = [
         gold_team="rescue",
         gold_priority="urgent",
         required_reply_keywords=["boats", "evacuation", "eta"],
+        lat=29.7604,
+        lon=-95.3698,
     ),
     TicketSpec(
         ticket_id="E-102",
@@ -55,6 +60,8 @@ _EASY_TICKETS = [
         gold_team="shelter",
         gold_priority="high",
         required_reply_keywords=["water", "supply", "dispatch"],
+        lat=29.7589,
+        lon=-95.3677,
     ),
     TicketSpec(
         ticket_id="E-103",
@@ -66,6 +73,8 @@ _EASY_TICKETS = [
         gold_team="utilities",
         gold_priority="high",
         required_reply_keywords=["grid", "crew", "restoration"],
+        lat=34.0522,
+        lon=-118.2437,
     ),
     TicketSpec(
         ticket_id="E-104",
@@ -77,6 +86,8 @@ _EASY_TICKETS = [
         gold_team="utilities",
         gold_priority="high",
         required_reply_keywords=["gas", "isolate", "crew"],
+        lat=34.0567,
+        lon=-118.2456,
     ),
     TicketSpec(
         ticket_id="E-105",
@@ -88,6 +99,8 @@ _EASY_TICKETS = [
         gold_team="rescue",
         gold_priority="urgent",
         required_reply_keywords=["rescue", "children", "evacuation"],
+        lat=29.7500,
+        lon=-95.3800,
     ),
 ]
 
@@ -105,6 +118,8 @@ _MEDIUM_TICKETS = [
         gold_team="medical",
         gold_priority="urgent",
         required_reply_keywords=["triage", "ambulance", "hospital"],
+        lat=40.7128,
+        lon=-74.0060,
     ),
     TicketSpec(
         ticket_id="M-202",
@@ -116,6 +131,8 @@ _MEDIUM_TICKETS = [
         gold_team="logistics",
         gold_priority="high",
         required_reply_keywords=["reroute", "bus", "coordination"],
+        lat=40.7158,
+        lon=-74.0030,
     ),
     TicketSpec(
         ticket_id="M-203",
@@ -127,6 +144,8 @@ _MEDIUM_TICKETS = [
         gold_team="utilities",
         gold_priority="high",
         required_reply_keywords=["backup", "generator", "stabilize"],
+        lat=35.6895,
+        lon=139.6917,
     ),
     TicketSpec(
         ticket_id="M-204",
@@ -138,6 +157,8 @@ _MEDIUM_TICKETS = [
         gold_team="utilities",
         gold_priority="urgent",
         required_reply_keywords=["isolate", "ventilation", "generator"],
+        lat=35.6850,
+        lon=139.7000,
     ),
     TicketSpec(
         ticket_id="M-205",
@@ -150,6 +171,8 @@ _MEDIUM_TICKETS = [
         gold_team="rescue",
         gold_priority="urgent",
         required_reply_keywords=["boats", "airlift", "water"],
+        lat=19.0760,
+        lon=72.8777,
     ),
 ]
 
@@ -167,6 +190,8 @@ _HARD_TICKETS = [
         gold_team="rescue",
         gold_priority="urgent",
         required_reply_keywords=["sirens", "evacuation", "staging"],
+        lat=27.1751,
+        lon=78.0421,
     ),
     TicketSpec(
         ticket_id="H-302",
@@ -178,6 +203,8 @@ _HARD_TICKETS = [
         gold_team="medical",
         gold_priority="urgent",
         required_reply_keywords=["transfer", "critical", "capacity"],
+        lat=27.1781,
+        lon=78.0451,
     ),
     TicketSpec(
         ticket_id="H-303",
@@ -189,6 +216,8 @@ _HARD_TICKETS = [
         gold_team="logistics",
         gold_priority="high",
         required_reply_keywords=["capacity", "transport", "fuel"],
+        lat=-22.9068,
+        lon=-43.1729,
     ),
     TicketSpec(
         ticket_id="H-304",
@@ -200,19 +229,23 @@ _HARD_TICKETS = [
         customer_tier="national",
         gold_team="rescue",
         gold_priority="urgent",
-        required_reply_keywords=["evacuation", "perimeter", "hazmat"],
+        required_reply_keywords=["plume", "hazmat", "perimeter"],
+        lat=-22.9100,
+        lon=-43.1780,
     ),
     TicketSpec(
         ticket_id="H-305",
         customer_message=(
-            "Communication towers in 4 districts are offline after the quake. "
-            "Emergency services cannot coordinate field teams and the public "
-            "has no access to alerts or safety information."
+            "Main communication tower offline after storm. Satellite relay "
+            "is intermittent. All rescue and medical teams in the region are "
+            "uncoordinated."
         ),
         customer_tier="national",
         gold_team="utilities",
         gold_priority="urgent",
-        required_reply_keywords=["satellite", "relay", "restoration"],
+        required_reply_keywords=["communication", "satellite", "relay"],
+        lat=39.9042,
+        lon=116.4074,
     ),
 ]
 
