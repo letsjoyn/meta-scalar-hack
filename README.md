@@ -30,6 +30,11 @@ tags:
 During a natural disaster, **Emergency Operations Centers (EOCs)** are overwhelmed by thousands of frantic calls. Distinguishing between a stranded cat and a chemical plant explosion can mean the difference between life and death. 
 
 While most AI environments simulate video games or simple web forms, this OpenEnv simulates the **fog of war**. Agents must route incidents, triage urgency, drafted execution plans, and manage extremely limited resources (rescue helicopters, generators, etc.) while avoiding cascading failures.
+### 📰 Ripped From The Headlines: Based on True Events
+To guarantee **maximum real-world utility**, the 15 simulated scenarios in this environment were directly modeled after the operational failures seen in historical disasters:
+*   **The 2021 Texas Power Freeze:** Inspired our "Medium Tier" scenario involving cascading *Cold-Chain Medicine Failures* when power grids collapsed.
+*   **The 2023 Ohio Train Derailment:** Modeled in our "Hard Tier" as a *Chemical Plant Fire*, requiring the AI agent to prioritize immediate toxic plume evacuations over standard fires.
+*   **Hurricane Katrina (2005):** The basis for our *Communication Tower Blackouts* and *Dam Spillway Overflows*, forcing the AI to orchestrate multi-district rescue logistics before cascading infrastructure failures hit.
 
 ---
 
