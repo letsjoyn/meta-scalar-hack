@@ -81,9 +81,10 @@ This project includes **two web experiences**:
 
 ### Judge-Friendly URLs
 
-- Space homepage: `https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv`
-- OpenEnv web app path: `https://joynnayvedya-disaster-response-openenv.hf.space/web/`
-- Custom dashboard path: `https://joynnayvedya-disaster-response-openenv.hf.space/ui/`
+- Space homepage: [Hugging Face Space](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
+- OpenEnv web app path: [OpenEnv Web App](https://joynnayvedya-disaster-response-openenv.hf.space/web/)
+- Custom dashboard path: [Command Center Dashboard](https://joynnayvedya-disaster-response-openenv.hf.space/ui/)
+- Custom dashboard (preloaded incidents): [Dashboard with task preload](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)
 
 ### What the Custom UI Shows
 
