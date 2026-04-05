@@ -41,7 +41,6 @@ class SupportOpsEnv(EnvClient[SupportOpsAction, SupportOpsObservation, SupportOp
             observation=observation,
             reward=payload.get("reward"),
             done=payload.get("done", False),
-            info=payload.get("info", {}),
         )
 
     def _parse_state(self, payload: Dict[str, Any]) -> SupportOpsState:
