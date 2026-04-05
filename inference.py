@@ -20,7 +20,6 @@ Stdout format
 import asyncio
 import json
 import os
-import sys
 from typing import Dict, List, Optional
 
 from openai import OpenAI
@@ -31,7 +30,7 @@ from client import SupportOpsEnv
 
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
-API_KEY = os.getenv("HF_TOKEN")
+HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 MAX_STEPS = int(os.getenv("MAX_STEPS", "35"))
 TEMPERATURE = 0.0
@@ -298,58 +297,6 @@ def _policy_action(
 
 # ── Main loop ────────────────────────────────────────────────────────────
 
-from urllib import request as urlrequest
-
-
-ENV_BASE_URL = os.getenv("ENV_BASE_URL", "http://localhost:8000")
-UI_UPDATE_URL = os.getenv("UI_UPDATE_URL", f"{ENV_BASE_URL}/ui/update")
-ENABLE_UI_UPDATES = os.getenv("ENABLE_UI_UPDATES", "1").strip().lower() not in {"0", "false", "no"}
-
-
-def _push_ui_update(obs) -> None:
-    if not ENABLE_UI_UPDATES:
-        return
-
-    metadata = obs.metadata or {}
-    budget = int(metadata.get("resource_budget", 0) or 0)
-    used = int(metadata.get("resource_used", 0) or 0)
-    resources_remaining = 100
-    if budget > 0:
-        resources_remaining = max(0, min(100, int(round((budget - used) * 100 / budget))))
-
-    incidents = []
-    for ticket in obs.inbox_snapshot:
-        incidents.append(
-            {
-                "id": ticket.get("ticket_id"),
-                "message": ticket.get("message", ""),
-                "priority": ticket.get("predicted_priority") or "medium",
-                "lat": ticket.get("lat"),
-                "lon": ticket.get("lon"),
-                "submitted": bool(ticket.get("submitted", False)),
-            }
-        )
-
-    payload = {
-        "score": round(float(obs.task_score or 0.0), 3),
-        "resources": resources_remaining,
-        "incidents": incidents,
-    }
-
-    body = json.dumps(payload).encode("utf-8")
-    req = urlrequest.Request(
-        UI_UPDATE_URL,
-        data=body,
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-
-    try:
-        with urlrequest.urlopen(req, timeout=0.4):
-            pass
-    except Exception:
-        pass
-
 
 async def run_task(task_name: str) -> None:
     rewards: List[float] = []
@@ -359,20 +306,19 @@ async def run_task(task_name: str) -> None:
     ticket_stage: Dict[str, int] = {}
 
     client: Optional[OpenAI] = None
-    if API_KEY:
-        client = OpenAI(base_url=API_BASE_URL, api_key=API_KEY)
+    if HF_TOKEN:
+        client = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
 
     env = (
         await SupportOpsEnv.from_docker_image(LOCAL_IMAGE_NAME)
         if LOCAL_IMAGE_NAME
-        else SupportOpsEnv(base_url=ENV_BASE_URL)
+        else SupportOpsEnv(base_url="http://localhost:8000")
     )
 
     log_start(task=task_name, env=BENCHMARK, model=MODEL_NAME)
 
     try:
         result = await env.reset(task_name=task_name)
-        _push_ui_update(result.observation)
 
         for step in range(1, MAX_STEPS + 1):
             if result.done:
@@ -389,13 +335,13 @@ async def run_task(task_name: str) -> None:
             err = result.observation.last_action_error
             log_step(
                 step=step,
-                action=_safe_action_string(action.model_dump(exclude_none=True)),
+                action=_safe_action_string(
+                    action.model_dump(exclude_none=True, exclude={"metadata"})
+                ),
                 reward=reward,
                 done=result.done,
                 error=err,
             )
-
-            _push_ui_update(result.observation)
 
             if result.done:
                 break
