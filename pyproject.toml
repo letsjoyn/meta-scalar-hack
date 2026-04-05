@@ -1,0 +1,22 @@
+[project]
+name = "support-ops-openenv"
+version = "0.1.0"
+description = "OpenEnv customer support triage environment with deterministic graders"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core[core]>=0.2.3",
+    "pydantic>=2.6",
+    "openai>=1.30.0",
+    "uvicorn>=0.30.0",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["client", "models", "tasks", "inference"]
+
+[tool.setuptools.packages.find]
+include = ["server"]
