@@ -10,6 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreEl = document.getElementById('score');
     const resourcesEl = document.getElementById('resources');
 
+    const taskParam = new URLSearchParams(window.location.search).get('task') || 'all';
+
+    async function loadBootstrap() {
+        try {
+            const res = await fetch(`/ui/bootstrap?task=${encodeURIComponent(taskParam)}`);
+            if (!res.ok) {
+                return;
+            }
+            const payload = await res.json();
+            updateUI(payload);
+        } catch {
+            // Ignore bootstrap errors and wait for websocket updates.
+        }
+    }
+
+    loadBootstrap();
+
     const wsProto = window.location.protocol === 'https:' ? 'wss' : 'ws';
     const ws = new WebSocket(`${wsProto}://${window.location.host}/ws`);
 
@@ -22,14 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function updateUI(data) {
-        scoreEl.textContent = data.score;
-        resourcesEl.textContent = `${data.resources}%`;
+        const incidents = Array.isArray(data.incidents) ? data.incidents : [];
+
+        scoreEl.textContent = data.score ?? 0;
+        resourcesEl.textContent = `${data.resources ?? 100}%`;
         markerLayer.clearLayers();
 
         const latLngs = [];
 
         incidentList.innerHTML = '';
-        data.incidents.forEach(incident => {
+        incidents.forEach(incident => {
             const li = document.createElement('li');
             li.className = `incident ${incident.priority}`;
             li.innerHTML = `
