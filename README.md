@@ -1,7 +1,7 @@
 ---
 title: Disaster Response Coordination Environment Server
 emoji: 🚨
-colorFrom: orange
+colorFrom: yellow
 colorTo: blue
 sdk: docker
 pinned: false
