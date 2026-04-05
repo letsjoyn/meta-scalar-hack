@@ -33,6 +33,46 @@ While most AI environments simulate video games or simple web forms, this OpenEn
 
 ---
 
+## 🏗️ System Architecture
+
+The environment strictly adheres to the OpenEnv REST architecture, ensuring a complete decoupling between the AI Agent (Evaluator) and the Environment (Simulator).
+
+```mermaid
+graph TD
+    subgraph "🤖 Evaluator (Participant's Machine)"
+        A[Inference Script] -->|1. Request Prompt| B((LLM: Qwen/Llama))
+        B -->|2. Generate Text| A
+        A -->|3. Parse to Action| C[Pydantic: SupportOpsAction]
+    end
+
+    subgraph "☁️ Hugging Face Space (OpenEnv Server)"
+        C -->|POST /step | D[FastAPI Router]
+        D --> E{Validation Layer}
+        E -->|Invalid| F[Penalty Appended]
+        E -->|Valid| G[Environment Logic]
+        
+        G --> H[Update Ticket State]
+        G --> I[Resource Manager]
+        G --> J[Deterministic Grader]
+        
+        J -->|4. Reward Calculation| K[Pydantic: SupportOpsObservation]
+        H --> K
+        I --> K
+    end
+
+    K -->|HTTP 200 OK| A
+    
+    classDef llm fill:#f9d0c4,stroke:#333,stroke-width:2px;
+    classDef server fill:#d4ebf2,stroke:#333,stroke-width:2px;
+    classDef data fill:#e5ffe5,stroke:#333,stroke-width:2px;
+    
+    class B llm;
+    class D,G,H,I,J server;
+    class C,K data;
+```
+
+---
+
 ## 🏆 Why This Meets All Hackathon Criteria
 
 | Hackathon Criteria | How This Environment Delivers |
