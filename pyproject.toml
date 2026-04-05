@@ -20,6 +20,3 @@ py-modules = ["client", "models", "tasks", "inference"]
 
 [tool.setuptools.packages.find]
 include = ["server"]
-
-[project.scripts]
-server = "server.app:main"
