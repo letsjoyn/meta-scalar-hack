@@ -31,7 +31,7 @@ app = create_app(
 
 # ── Websocket and UI ─────────────────────────────────────────────────────
 
-from fastapi import WebSocket, WebSocketDisconnect
+from fastapi import Request, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 import asyncio
 
@@ -52,6 +52,16 @@ class ConnectionManager:
             await connection.send_text(message)
 
 manager = ConnectionManager()
+
+
+@app.middleware("http")
+async def disable_ui_cache(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/ui"):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+    return response
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
