@@ -6,7 +6,7 @@ colorTo: blue
 sdk: docker
 pinned: false
 app_port: 8000
-base_path: /web
+base_path: /ui
 tags:
   - openenv
   - disaster-response
@@ -20,7 +20,9 @@ tags:
   <p><strong>A Real-World OpenEnv Simulator for AI Emergency Incident Command</strong></p>
 
   <p>
-    <a href="https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv"><strong>🌍 View Live on Hugging Face Spaces</strong></a>
+    <a href="https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all"><strong>Open Tactical Dashboard</strong></a>
+    ·
+    <a href="https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv"><strong>View Hugging Face Space</strong></a>
   </p>
 </div>
 
