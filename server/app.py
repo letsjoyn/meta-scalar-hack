@@ -14,9 +14,11 @@ os.environ.setdefault("ENABLE_WEB_INTERFACE", "true")
 try:
     from ..models import SupportOpsAction, SupportOpsObservation
     from .support_ops_environment import SupportOpsEnvironment
+    from ..tasks import TASKS
 except ImportError:
     from models import SupportOpsAction, SupportOpsObservation
     from server.support_ops_environment import SupportOpsEnvironment
+    from tasks import TASKS
 
 
 app = create_app(
@@ -66,6 +68,39 @@ async def websocket_endpoint(websocket: WebSocket):
 async def post_ui_update(data: dict):
     await manager.broadcast(json.dumps({"type": "update", "payload": data}))
     return {"status": "ok"}
+
+
+@app.get("/ui/bootstrap")
+async def ui_bootstrap(task: str = "all"):
+    incidents = []
+
+    task_specs = []
+    if task == "all":
+        task_specs = list(TASKS.values())
+    elif task in TASKS:
+        task_specs = [TASKS[task]]
+    else:
+        task_specs = [TASKS["easy"]]
+
+    for spec in task_specs:
+        for ticket in spec.tickets:
+            incidents.append(
+                {
+                    "id": ticket.ticket_id,
+                    "message": ticket.customer_message,
+                    "priority": ticket.gold_priority,
+                    "lat": ticket.lat,
+                    "lon": ticket.lon,
+                    "submitted": False,
+                }
+            )
+
+    return {
+        "task": task,
+        "score": 0.0,
+        "resources": 100,
+        "incidents": incidents,
+    }
 
 # Mount the static files for the UI
 app.mount(
