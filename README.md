@@ -134,7 +134,7 @@ Run the official baseline agent against the environment using the Hugging Face S
 # Windows PowerShell
 $env:API_BASE_URL="https://router.huggingface.co/v1"
 $env:MODEL_NAME="Qwen/Qwen2.5-72B-Instruct"
-$env:HF_TOKEN="hf_YOUR_TOKEN_HERE"
+$env:HF_TOKEN="hf_YOUR_OWN_TOKEN_HERE" # Evaluators must use their own Hugging Face Token
 
 python inference.py
 ```
@@ -150,4 +150,4 @@ This project natively passes all Hugging Face Spaces requirements and the offici
 * **Lightweight:** Designed to spin up in under 3 minutes with zero expensive dependencies.
 
 ---
-*Built for the 2024 Meta & Scalar AI Hackathon.*
+*Built for the 2026 Meta & Scalar AI Hackathon.*
