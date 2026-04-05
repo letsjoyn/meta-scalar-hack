@@ -61,14 +61,6 @@ graph TD
     end
 
     K -->|HTTP 200 OK| A
-    
-    classDef llm fill:#f9d0c4,stroke:#333,stroke-width:2px;
-    classDef server fill:#d4ebf2,stroke:#333,stroke-width:2px;
-    classDef data fill:#e5ffe5,stroke:#333,stroke-width:2px;
-    
-    class B llm;
-    class D,G,H,I,J server;
-    class C,K data;
 ```
 
 ---
