@@ -13,42 +13,48 @@ document.addEventListener("DOMContentLoaded", () => {
         socket: null,
     };
 
-    
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    function playAlertSound(priority) {
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
+    let audioCtx = null;
+
+    function getAudioCtx() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        
-        if (priority === 'urgent') {
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.3);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.3);
-        } else if (priority === 'high') {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.2);
-        } else {
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.1);
-        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
     }
+
+    function playAlertSound(priority) {
+        try {
+            const ctx = getAudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            if (priority === 'urgent') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                osc.start(); osc.stop(ctx.currentTime + 0.3);
+            } else if (priority === 'high') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, ctx.currentTime);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                osc.start(); osc.stop(ctx.currentTime + 0.2);
+            } else {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, ctx.currentTime);
+                gain.gain.setValueAtTime(0.02, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+                osc.start(); osc.stop(ctx.currentTime + 0.1);
+            }
+        } catch (e) { }
+    }
+
+    // Unlock audio on first user gesture
+    document.addEventListener('click', () => { try { getAudioCtx(); } catch (e) { } }, { once: true });
 
     const elements = {
         taskSelect: document.getElementById("task-select"),
@@ -121,8 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="feed-text typewriter-text">${escapeHtml(text)}</span>
         `;
         elements.eventFeed.prepend(li);
-        
-        try { playAlertSound(type === "warn" || type === "error" ? "urgent" : "low"); } catch(e){}
+
+        try { playAlertSound(type === "warn" || type === "error" ? "urgent" : "low"); } catch (e) { }
 
         while (elements.eventFeed.children.length > 40) {
             elements.eventFeed.removeChild(elements.eventFeed.lastChild);
@@ -137,6 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
             lat: item?.lat,
             lon: item?.lon,
             submitted: Boolean(item?.submitted),
+            team: item?.team || null,
+            score: typeof item?.score === 'number' ? item.score : 0.0,
         };
     }
 
@@ -200,9 +208,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (const incident of incidents) {
             const li = document.createElement("li");
-            li.className = `incident-item priority-${incident.priority}`;
-            const status = incident.submitted ? "Submitted" : "Active";
-            const statusColor = incident.submitted ? "Submitted" : "Active";
+            li.className = `incident-item priority-${incident.priority}${incident.submitted ? ' submitted' : ''}`;
+            const status = incident.submitted ? "✅ Submitted" : "🔴 Active";
+            const teamText = incident.team ? `→ ${incident.team}` : '';
+            const scoreText = incident.submitted ? ` | score: ${Number(incident.score).toFixed(2)}` : '';
 
             li.innerHTML = `
                 <div class="incident-top">
@@ -212,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p class="incident-message">${escapeHtml(incident.message)}</p>
                 <div class="incident-actions">
                     <button type="button" data-lat="${escapeHtml(incident.lat)}" data-lon="${escapeHtml(incident.lon)}">Locate</button>
-                    <span class="incident-status">${escapeHtml(statusColor)}</span>
+                    <span class="incident-status">${status}${teamText ? ` ${escapeHtml(teamText)}` : ''}${scoreText}</span>
                 </div>
             `;
             elements.incidentList.appendChild(li);
@@ -232,7 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             latLngs.push([lat, lon]);
 
-            const iconHtml = `<div class="marker-pin marker-${escapeHtml(incident.priority)}"><div class="marker-ring"></div></div>`;
+            const pinClass = incident.submitted ? 'marker-submitted' : `marker-${escapeHtml(incident.priority)}`;
+            const iconHtml = incident.submitted
+                ? `<div class="marker-pin marker-submitted"><span style="font-size:10px;line-height:16px;">✓</span></div>`
+                : `<div class="marker-pin marker-${escapeHtml(incident.priority)}"><div class="marker-ring"></div></div>`;
             const customIcon = L.divIcon({
                 html: iconHtml,
                 className: '',
@@ -288,6 +300,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function disconnectSocket() {
+        if (state._pingInterval) {
+            clearInterval(state._pingInterval);
+            state._pingInterval = null;
+        }
         if (state.socket) {
             const socket = state.socket;
             state.socket = null;
@@ -301,12 +317,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const proto = window.location.protocol === "https:" ? "wss" : "ws";
-        const socket = new WebSocket(`${proto}://${window.location.host}/ws`);
+        const socket = new WebSocket(`${proto}://${window.location.host}/dashboard-ws`);
         state.socket = socket;
 
         socket.onopen = () => {
             addFeedEntry("Live stream connected.", "ok");
             elements.liveStatus.textContent = "Live";
+            // Send keepalive ping every 20s so server knows we're alive
+            if (state._pingInterval) clearInterval(state._pingInterval);
+            state._pingInterval = setInterval(() => {
+                if (state.socket && state.socket.readyState === WebSocket.OPEN) {
+                    state.socket.send("ping");
+                }
+            }, 20000);
         };
 
         socket.onmessage = (event) => {
@@ -317,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     try {
                         const hasUrgent = data.payload.incidents && data.payload.incidents.some(i => i.priority === "urgent");
                         playAlertSound(hasUrgent ? "urgent" : "low");
-                    } catch(e){}
+                    } catch (e) { }
                 }
             } catch {
                 addFeedEntry("Skipped malformed live payload.", "warn");
