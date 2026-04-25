@@ -188,7 +188,7 @@ When a ticket is submitted:
 ```bash
 git clone https://github.com/letsjoyn/meta-scalar-hack.git
 cd meta-scalar-hack
-py -m pip install -e .
+pip install -e .
 ```
 
 ### 2. Local Demo (Smoke Test)
@@ -211,25 +211,11 @@ Open locally:
 - OpenEnv web app: `http://127.0.0.1:8000/web/`
 - Custom dashboard: `http://127.0.0.1:8000/ui/`
 
-### One-command local run (Windows)
-
-```powershell
-.\run_local.ps1
-```
-
-### One-command local run (macOS/Linux)
-
-```bash
-chmod +x run_local.sh
-./run_local.sh
-```
-
 ### 4. LLM Inference Script
 Run baseline agent against environment:
 
 ```bash
 # Windows PowerShell
-$env:OPENENV_BASE_URL="https://joynnayvedya-disaster-response-openenv.hf.space"
 $env:API_BASE_URL="https://router.huggingface.co/v1"
 $env:MODEL_NAME="Qwen/Qwen2.5-72B-Instruct"
 $env:HF_TOKEN="hf_YOUR_OWN_TOKEN_HERE"
@@ -237,35 +223,6 @@ py inference.py
 ```
 
 ---
-
-## Training (GRPO / Unsloth)
-
-- **Training notebook**: `grpo_disaster_training.ipynb`
-- **Evaluation notebook (artifacts + comparison)**: `train_clean.ipynb`
-- **Trained model on HF Hub**: [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained)
-
-### What was trained
-
-- **Base model**: `unsloth/qwen2.5-1.5b-instruct-unsloth-bnb-4bit`
-- **Method**: GRPO (via TRL) with reward computed by this OpenEnv environment (verifiable reward from `/step`).
-
----
-
-## Results
-
-Artifacts saved by `train_clean.ipynb`:
-
-- `results/baseline_agent_metrics.json`
-- `results/trained_metrics.json`
-- `results/comparison.json`
-- `results/trained_inference_raw.log`
-
----
-
-## Links
-
-- **Environment (Space)**: [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
-- **Trained model**: [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained)
 
 ## 🌐 Deployment & Validation
 
@@ -282,6 +239,5 @@ openenv validate
 ```
 
 ---
-
 
 *Built for the 2026 Meta & Scalar AI Hackathon.*

@@ -54,11 +54,6 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.get("/health")
-async def health() -> dict:
-    return {"status": "ok"}
-
-
 @app.middleware("http")
 async def disable_ui_cache(request: Request, call_next):
     response = await call_next(request)
