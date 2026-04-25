@@ -1,67 +1,67 @@
-[START] task=easy env=support_ops_env model=Qwen/Qwen2.5-72B-Instruct
-[STEP] step=1 action=action_type=classify|ticket_id=E-101|predicted_team=rescue reward=0.35 done=false error=null
-[STEP] step=2 action=action_type=set_priority|ticket_id=E-101|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=3 action=action_type=draft_reply|ticket_id=E-101|reply_text=Priority_urgent._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor._Deploy_rescue_boats._Confirm_evacuation_ETA. reward=0.70 done=false error=null
-[STEP] step=4 action=action_type=submit_ticket|ticket_id=E-101 reward=0.93 done=false error=null
-[STEP] step=5 action=action_type=classify|ticket_id=E-102|predicted_team=shelter reward=0.35 done=false error=null
-[STEP] step=6 action=action_type=set_priority|ticket_id=E-102|predicted_priority=urgent reward=0.12 done=false error=null
-[STEP] step=7 action=action_type=draft_reply|ticket_id=E-102|reply_text=Priority_urgent._Route_to_shelter_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Dispatch_additional_water_supply._Confirm_shelter_dispatch. reward=0.70 done=false error=null
-[STEP] step=8 action=action_type=submit_ticket|ticket_id=E-102 reward=0.80 done=false error=null
-[STEP] step=9 action=action_type=classify|ticket_id=E-103|predicted_team=utilities reward=0.35 done=false error=null
+[START] task=easy env=support_ops_env model=joynnayvedya/disaster-response-trained
+[STEP] step=1 action=action_type=classify|ticket_id=E-101|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=2 action=action_type=set_priority|ticket_id=E-101|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=3 action=action_type=draft_reply|ticket_id=E-101|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=4 action=action_type=submit_ticket|ticket_id=E-101 reward=0.28 done=false error=null
+[STEP] step=5 action=action_type=classify|ticket_id=E-102|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=6 action=action_type=set_priority|ticket_id=E-102|predicted_priority=medium reward=0.12 done=false error=null
+[STEP] step=7 action=action_type=draft_reply|ticket_id=E-102|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.40 done=false error=null
+[STEP] step=8 action=action_type=submit_ticket|ticket_id=E-102 reward=0.40 done=false error=null
+[STEP] step=9 action=action_type=classify|ticket_id=E-103|predicted_team=general reward=0.05 done=false error=null
 [STEP] step=10 action=action_type=set_priority|ticket_id=E-103|predicted_priority=medium reward=0.12 done=false error=null
-[STEP] step=11 action=action_type=draft_reply|ticket_id=E-103|reply_text=Priority_medium._Route_to_utilities_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Dispatch_grid_restoration_crew_and_provide_ETA. reward=0.70 done=false error=null
-[STEP] step=12 action=action_type=submit_ticket|ticket_id=E-103 reward=0.80 done=false error=null
-[STEP] step=13 action=action_type=classify|ticket_id=E-104|predicted_team=rescue reward=0.05 done=false error=null
-[STEP] step=14 action=action_type=set_priority|ticket_id=E-104|predicted_priority=urgent reward=0.12 done=false error=null
-[STEP] step=15 action=action_type=draft_reply|ticket_id=E-104|reply_text=Priority_urgent._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor. reward=0.25 done=false error=null
+[STEP] step=11 action=action_type=draft_reply|ticket_id=E-103|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=12 action=action_type=submit_ticket|ticket_id=E-103 reward=0.37 done=false error=null
+[STEP] step=13 action=action_type=classify|ticket_id=E-104|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=14 action=action_type=set_priority|ticket_id=E-104|predicted_priority=medium reward=0.12 done=false error=null
+[STEP] step=15 action=action_type=draft_reply|ticket_id=E-104|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
 [STEP] step=16 action=action_type=submit_ticket|ticket_id=E-104 reward=0.37 done=false error=null
-[STEP] step=17 action=action_type=classify|ticket_id=E-105|predicted_team=rescue reward=0.35 done=false error=null
-[STEP] step=18 action=action_type=set_priority|ticket_id=E-105|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=19 action=action_type=draft_reply|ticket_id=E-105|reply_text=Priority_urgent._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor._Deploy_rescue_boats._Confirm_evacuation_ETA._Prioritize_rescue_of_children._Confirm_evacuation_ETA. reward=0.70 done=false error=null
-[STEP] step=20 action=action_type=submit_ticket|ticket_id=E-105 reward=0.93 done=true error=null
-[END] success=true steps=20 score=0.704 rewards=0.35,0.30,0.70,0.93,0.35,0.12,0.70,0.80,0.35,0.12,0.70,0.80,0.05,0.12,0.25,0.37,0.35,0.30,0.70,0.93
-[START] task=medium env=support_ops_env model=Qwen/Qwen2.5-72B-Instruct
-[STEP] step=1 action=action_type=classify|ticket_id=M-201|predicted_team=medical reward=0.35 done=false error=null
-[STEP] step=2 action=action_type=set_priority|ticket_id=M-201|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=3 action=action_type=draft_reply|ticket_id=M-201|reply_text=Priority_urgent._Route_to_medical_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Begin_triage_and_dispatch_ambulance_to_nearest_hospital. reward=0.70 done=false error=null
-[STEP] step=4 action=action_type=submit_ticket|ticket_id=M-201 reward=0.93 done=false error=null
-[STEP] step=5 action=action_type=classify|ticket_id=M-202|predicted_team=logistics reward=0.35 done=false error=null
-[STEP] step=6 action=action_type=set_priority|ticket_id=M-202|predicted_priority=urgent reward=0.12 done=false error=null
-[STEP] step=7 action=action_type=draft_reply|ticket_id=M-202|reply_text=Priority_urgent._Route_to_logistics_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Coordinate_bus_reroute_and_confirm_fuel_availability_for_transport. reward=0.55 done=false error=null
-[STEP] step=8 action=action_type=submit_ticket|ticket_id=M-202 reward=0.76 done=false error=null
-[STEP] step=9 action=action_type=classify|ticket_id=M-203|predicted_team=utilities reward=0.35 done=false error=null
-[STEP] step=10 action=action_type=set_priority|ticket_id=M-203|predicted_priority=high reward=0.30 done=false error=null
-[STEP] step=11 action=action_type=draft_reply|ticket_id=M-203|reply_text=Priority_high._Route_to_utilities_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Dispatch_grid_restoration_crew_and_provide_ETA. reward=0.25 done=false error=null
-[STEP] step=12 action=action_type=submit_ticket|ticket_id=M-203 reward=0.82 done=false error=null
-[STEP] step=13 action=action_type=classify|ticket_id=M-204|predicted_team=medical reward=0.05 done=false error=null
-[STEP] step=14 action=action_type=set_priority|ticket_id=M-204|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=15 action=action_type=draft_reply|ticket_id=M-204|reply_text=Priority_urgent._Route_to_medical_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Begin_triage_and_dispatch_ambulance_to_nearest_hospital. reward=0.25 done=false error=null
-[STEP] step=16 action=action_type=submit_ticket|ticket_id=M-204 reward=0.50 done=false error=null
-[STEP] step=17 action=action_type=classify|ticket_id=M-205|predicted_team=rescue reward=0.35 done=false error=null
-[STEP] step=18 action=action_type=set_priority|ticket_id=M-205|predicted_priority=high reward=0.12 done=false error=null
-[STEP] step=19 action=action_type=draft_reply|ticket_id=M-205|reply_text=Priority_high._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor._Deploy_rescue_boats._Confirm_evacuation_ETA. reward=0.40 done=false error=null
-[STEP] step=20 action=action_type=submit_ticket|ticket_id=M-205 reward=0.72 done=true error=null
-[END] success=true steps=20 score=0.683 rewards=0.35,0.30,0.70,0.93,0.35,0.12,0.55,0.76,0.35,0.30,0.25,0.82,0.05,0.30,0.25,0.50,0.35,0.12,0.40,0.72
-[START] task=hard env=support_ops_env model=Qwen/Qwen2.5-72B-Instruct
-[STEP] step=1 action=action_type=classify|ticket_id=H-301|predicted_team=rescue reward=0.35 done=false error=null
-[STEP] step=2 action=action_type=set_priority|ticket_id=H-301|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=3 action=action_type=draft_reply|ticket_id=H-301|reply_text=Priority_urgent._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor._Activate_sirens_for_downstream_evacuation_staging. reward=0.70 done=false error=null
-[STEP] step=4 action=action_type=submit_ticket|ticket_id=H-301 reward=0.79 done=false error=null
-[STEP] step=5 action=action_type=classify|ticket_id=H-302|predicted_team=medical reward=0.35 done=false error=null
-[STEP] step=6 action=action_type=set_priority|ticket_id=H-302|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=7 action=action_type=draft_reply|ticket_id=H-302|reply_text=Priority_urgent._Route_to_medical_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Begin_triage_and_dispatch_ambulance_to_nearest_hospital._Arrange_critical_patient_transfer_and_confirm_capacity. reward=0.70 done=false error=null
-[STEP] step=8 action=action_type=submit_ticket|ticket_id=H-302 reward=0.79 done=false error=null
-[STEP] step=9 action=action_type=classify|ticket_id=H-303|predicted_team=shelter reward=0.05 done=false error=null
-[STEP] step=10 action=action_type=set_priority|ticket_id=H-303|predicted_priority=high reward=0.30 done=false error=null
-[STEP] step=11 action=action_type=draft_reply|ticket_id=H-303|reply_text=Priority_high._Route_to_shelter_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Dispatch_additional_water_supply._Confirm_shelter_dispatch. reward=0.25 done=false error=null
-[STEP] step=12 action=action_type=submit_ticket|ticket_id=H-303 reward=0.50 done=false error=null
-[STEP] step=13 action=action_type=classify|ticket_id=H-304|predicted_team=rescue reward=0.35 done=false error=null
-[STEP] step=14 action=action_type=set_priority|ticket_id=H-304|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=15 action=action_type=draft_reply|ticket_id=H-304|reply_text=Priority_urgent._Route_to_rescue_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Prepare_evacuation_staging_area_and_confirm_safe_corridor._Establish_evacuation_perimeter_and_deploy_hazmat_crew. reward=0.55 done=false error=null
-[STEP] step=16 action=action_type=submit_ticket|ticket_id=H-304 reward=0.76 done=false error=null
-[STEP] step=17 action=action_type=classify|ticket_id=H-305|predicted_team=utilities reward=0.35 done=false error=null
-[STEP] step=18 action=action_type=set_priority|ticket_id=H-305|predicted_priority=urgent reward=0.30 done=false error=null
-[STEP] step=19 action=action_type=draft_reply|ticket_id=H-305|reply_text=Priority_urgent._Route_to_utilities_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window._Deploy_satellite_relay_for_communication_restoration. reward=0.70 done=false error=null
-[STEP] step=20 action=action_type=submit_ticket|ticket_id=H-305 reward=0.79 done=true error=null
-[END] success=true steps=20 score=0.660 rewards=0.35,0.30,0.70,0.79,0.35,0.30,0.70,0.79,0.05,0.30,0.25,0.50,0.35,0.30,0.55,0.76,0.35,0.30,0.70,0.79
+[STEP] step=17 action=action_type=classify|ticket_id=E-105|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=18 action=action_type=set_priority|ticket_id=E-105|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=19 action=action_type=draft_reply|ticket_id=E-105|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=20 action=action_type=submit_ticket|ticket_id=E-105 reward=0.28 done=true error=null
+[END] success=false steps=20 score=0.177 rewards=0.05,0.02,0.25,0.28,0.05,0.12,0.40,0.40,0.05,0.12,0.25,0.37,0.05,0.12,0.25,0.37,0.05,0.02,0.25,0.28
+[START] task=medium env=support_ops_env model=joynnayvedya/disaster-response-trained
+[STEP] step=1 action=action_type=classify|ticket_id=M-201|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=2 action=action_type=set_priority|ticket_id=M-201|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=3 action=action_type=draft_reply|ticket_id=M-201|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=4 action=action_type=submit_ticket|ticket_id=M-201 reward=0.28 done=false error=null
+[STEP] step=5 action=action_type=classify|ticket_id=M-202|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=6 action=action_type=set_priority|ticket_id=M-202|predicted_priority=medium reward=0.12 done=false error=null
+[STEP] step=7 action=action_type=draft_reply|ticket_id=M-202|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=8 action=action_type=submit_ticket|ticket_id=M-202 reward=0.37 done=false error=null
+[STEP] step=9 action=action_type=classify|ticket_id=M-203|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=10 action=action_type=set_priority|ticket_id=M-203|predicted_priority=medium reward=0.12 done=false error=null
+[STEP] step=11 action=action_type=draft_reply|ticket_id=M-203|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=12 action=action_type=submit_ticket|ticket_id=M-203 reward=0.37 done=false error=null
+[STEP] step=13 action=action_type=classify|ticket_id=M-204|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=14 action=action_type=set_priority|ticket_id=M-204|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=15 action=action_type=draft_reply|ticket_id=M-204|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=16 action=action_type=submit_ticket|ticket_id=M-204 reward=0.28 done=false error=null
+[STEP] step=17 action=action_type=classify|ticket_id=M-205|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=18 action=action_type=set_priority|ticket_id=M-205|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=19 action=action_type=draft_reply|ticket_id=M-205|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=20 action=action_type=submit_ticket|ticket_id=M-205 reward=0.28 done=true error=null
+[END] success=false steps=20 score=0.147 rewards=0.05,0.02,0.25,0.28,0.05,0.12,0.25,0.37,0.05,0.12,0.25,0.37,0.05,0.02,0.25,0.28,0.05,0.02,0.25,0.28
+[START] task=hard env=support_ops_env model=joynnayvedya/disaster-response-trained
+[STEP] step=1 action=action_type=classify|ticket_id=H-301|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=2 action=action_type=set_priority|ticket_id=H-301|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=3 action=action_type=draft_reply|ticket_id=H-301|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=4 action=action_type=submit_ticket|ticket_id=H-301 reward=0.25 done=false error=null
+[STEP] step=5 action=action_type=classify|ticket_id=H-302|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=6 action=action_type=set_priority|ticket_id=H-302|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=7 action=action_type=draft_reply|ticket_id=H-302|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=8 action=action_type=submit_ticket|ticket_id=H-302 reward=0.27 done=false error=null
+[STEP] step=9 action=action_type=classify|ticket_id=H-303|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=10 action=action_type=set_priority|ticket_id=H-303|predicted_priority=medium reward=0.12 done=false error=null
+[STEP] step=11 action=action_type=draft_reply|ticket_id=H-303|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=12 action=action_type=submit_ticket|ticket_id=H-303 reward=0.37 done=false error=null
+[STEP] step=13 action=action_type=classify|ticket_id=H-304|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=14 action=action_type=set_priority|ticket_id=H-304|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=15 action=action_type=draft_reply|ticket_id=H-304|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=16 action=action_type=submit_ticket|ticket_id=H-304 reward=0.25 done=false error=null
+[STEP] step=17 action=action_type=classify|ticket_id=H-305|predicted_team=general reward=0.05 done=false error=null
+[STEP] step=18 action=action_type=set_priority|ticket_id=H-305|predicted_priority=medium reward=0.02 done=false error=null
+[STEP] step=19 action=action_type=draft_reply|ticket_id=H-305|reply_text=Priority_medium._Route_to_general_team._Dispatch_resources_within_30_minutes._Provide_field_update_and_next_checkpoint_window. reward=0.25 done=false error=null
+[STEP] step=20 action=action_type=submit_ticket|ticket_id=H-305 reward=0.27 done=true error=null
+[END] success=false steps=20 score=0.102 rewards=0.05,0.02,0.25,0.25,0.05,0.02,0.25,0.27,0.05,0.12,0.25,0.37,0.05,0.02,0.25,0.25,0.05,0.02,0.25,0.27
 

@@ -1,9 +1,9 @@
 {
-  "easy_score": 0.704,
-  "medium_score": 0.683,
-  "hard_score": 0.66,
-  "avg_score": 0.682,
-  "timestamp": "2026-04-25T10:29:53.874093",
+  "easy_score": 0.177,
+  "medium_score": 0.147,
+  "hard_score": 0.102,
+  "avg_score": 0.142,
+  "timestamp": "2026-04-25T14:09:32.752238",
   "source": "inference.py",
   "base_url": "https://joynnayvedya-disaster-response-openenv.hf.space"
 }

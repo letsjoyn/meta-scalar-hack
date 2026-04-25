@@ -188,7 +188,7 @@ When a ticket is submitted:
 ```bash
 git clone https://github.com/letsjoyn/meta-scalar-hack.git
 cd meta-scalar-hack
-pip install -e .
+py -m pip install -e .
 ```
 
 ### 2. Local Demo (Smoke Test)
@@ -211,11 +211,25 @@ Open locally:
 - OpenEnv web app: `http://127.0.0.1:8000/web/`
 - Custom dashboard: `http://127.0.0.1:8000/ui/`
 
+### One-command local run (Windows)
+
+```powershell
+.\run_local.ps1
+```
+
+### One-command local run (macOS/Linux)
+
+```bash
+chmod +x run_local.sh
+./run_local.sh
+```
+
 ### 4. LLM Inference Script
 Run baseline agent against environment:
 
 ```bash
 # Windows PowerShell
+$env:OPENENV_BASE_URL="https://joynnayvedya-disaster-response-openenv.hf.space"
 $env:API_BASE_URL="https://router.huggingface.co/v1"
 $env:MODEL_NAME="Qwen/Qwen2.5-72B-Instruct"
 $env:HF_TOKEN="hf_YOUR_OWN_TOKEN_HERE"
@@ -223,6 +237,35 @@ py inference.py
 ```
 
 ---
+
+## Training (GRPO / Unsloth)
+
+- **Training notebook**: `grpo_disaster_training.ipynb`
+- **Evaluation notebook (artifacts + comparison)**: `train_clean.ipynb`
+- **Trained model on HF Hub**: [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained)
+
+### What was trained
+
+- **Base model**: `unsloth/qwen2.5-1.5b-instruct-unsloth-bnb-4bit`
+- **Method**: GRPO (via TRL) with reward computed by this OpenEnv environment (verifiable reward from `/step`).
+
+---
+
+## Results
+
+Artifacts saved by `train_clean.ipynb`:
+
+- `results/baseline_agent_metrics.json`
+- `results/trained_metrics.json`
+- `results/comparison.json`
+- `results/trained_inference_raw.log`
+
+---
+
+## Links
+
+- **Environment (Space)**: [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
+- **Trained model**: [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained)
 
 ## 🌐 Deployment & Validation
 
@@ -239,44 +282,6 @@ openenv validate
 ```
 
 ---
-## 🧠 Training
 
-Trained **Qwen2.5-1.5B-Instruct** using **GRPO** (Group Relative Policy Optimization) via TRL + Unsloth on Google Colab T4 GPU.
-
-- **Model:** `unsloth/Qwen2.5-1.5B-Instruct` (4-bit QLoRA, r=16)
-- **Algorithm:** GRPOTrainer (TRL)
-- **Epochs:** 2 | **Steps:** 14
-- **Reward:** Live environment feedback via HF Space API
-
-### Reward Curve
-![GRPO Training Reward Curve](reward_curve.png)
-
----
-
-## 📊 Results
-
-| Agent | Easy | Medium | Hard | **Avg** |
-|-------|------|--------|------|---------|
-| Heuristic Baseline | 0.704 | 0.683 | 0.660 | **0.682** |
-| GRPO Trained (Qwen2.5-1.5B) | - | - | - | **TBD** |
-
-> Trained model learned valid team names (`rescue`, `medical`, etc.) and priority levels — baseline untrained model hallucinated invalid values like `"emergency"`, `"utility repair"`.
-
----
-
-## 🎬 Demo
-
-[Add YouTube link here]
-
----
-
-## 🔗 Links
-
-| Resource | URL |
-|----------|-----|
-| 🚀 HF Space (Environment) | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
-| 🧠 Trained Model | [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained) |
-| 💻 GitHub | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
-| 📓 Colab Notebook | [Add link after downloading] |
 
 *Built for the 2026 Meta & Scalar AI Hackathon.*

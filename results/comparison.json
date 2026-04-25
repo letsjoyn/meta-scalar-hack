@@ -1,16 +1,16 @@
 {
   "baseline_avg_score": 0.682,
-  "trained_avg_score": 0.682,
-  "delta_avg_score": 0.0,
+  "trained_avg_score": 0.142,
+  "delta_avg_score": -0.54,
   "baseline": {
     "easy": 0.704,
     "medium": 0.683,
     "hard": 0.66
   },
   "trained": {
-    "easy": 0.704,
-    "medium": 0.683,
-    "hard": 0.66
+    "easy": 0.177,
+    "medium": 0.147,
+    "hard": 0.102
   },
-  "timestamp": "2026-04-25T10:29:53.875093"
+  "timestamp": "2026-04-25T14:09:32.753135"
 }
