@@ -33,6 +33,7 @@ body {
 }
 
 .bg-grid {
+    animation: radarSweep 4s linear infinite;
     position: fixed;
     inset: 0;
     background:
@@ -61,7 +62,8 @@ body {
 .map-shell,
 .card,
 .panel {
-    background: linear-gradient(180deg, rgba(22, 37, 33, 0.94), rgba(13, 24, 21, 0.96));
+    background: linear-gradient(180deg, rgba(22, 37, 33, 0.6), rgba(13, 24, 21, 0.7));
+    backdrop-filter: blur(10px);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
 }
@@ -515,3 +517,143 @@ body {
         grid-template-rows: auto minmax(280px, 1fr) minmax(240px, 0.8fr);
     }
 }
+/* --- BEAST MODE UPGRADES --- */
+.crt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+@keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+.crt-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100px;
+    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(121,249,176,0.2) 50%, rgba(0,0,0,0) 100%);
+    opacity: 0.1;
+    animation: scanline 8s linear infinite;
+}
+
+/* Pulsing map markers */
+.pulse-icon {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pulse-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 currentcolor; }
+    100% { transform: scale(3); opacity: 0; box-shadow: 0 0 0 10px currentcolor; }
+}
+
+.pulse-urgent { background: var(--urgent); color: var(--urgent); border: 2px solid #fff; box-shadow: 0 0 10px var(--urgent); }
+.pulse-high { background: #ff8a4d; color: #ff8a4d; border: 2px solid #fff; }
+.pulse-medium { background: #ffbf47; color: #ffbf47; border: 1px solid #000; }
+.pulse-low { background: #62dd8d; color: #62dd8d; border: 1px solid #000; }
+
+/* Hacker typing effect */
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 2px solid var(--accent);
+    animation: typing 1s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { max-width: 0 }
+    to { max-width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--accent); }
+}
+
+.crt-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+}
+
+@keyframes radarSweep {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 56px; }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 0.5s steps(40, end);
+}
+
+/* Custom Marker Animations */
+.marker-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: relative;
+  transform: translate(-50%, -50%);
+}
+
+.marker-ring {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  border: 2px solid;
+}
+
+@keyframes pulse-ring {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+}
+
+.marker-urgent { background: #ff4545; box-shadow: 0 0 10px #ff4545; }
+.marker-urgent .marker-ring { border-color: #ff4545; animation-duration: 1s; }
+
+.marker-high { background: #ff8a4d; box-shadow: 0 0 8px #ff8a4d; }
+.marker-high .marker-ring { border-color: #ff8a4d; animation-duration: 1.5s; }
+
+.marker-medium { background: #ffc458; }
+.marker-medium .marker-ring { border-color: #ffc458; animation: none; }
+
+.marker-low { background: #62dd8d; }
+.marker-low .marker-ring { border-color: #62dd8d; animation: none; }

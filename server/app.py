@@ -68,9 +68,9 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
         while True:
-            # We are just broadcasting, so we don't need to receive
-            await asyncio.sleep(1)
-    except WebSocketDisconnect:
+            # Must wait for receive to keep connection alive and handle client disconnects
+            _ = await websocket.receive_text()
+    except Exception:
         manager.disconnect(websocket)
 
 # This will be used by the agent to push updates

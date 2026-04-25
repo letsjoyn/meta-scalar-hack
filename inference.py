@@ -32,6 +32,7 @@ API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
+OPENENV_BASE_URL = os.getenv("OPENENV_BASE_URL", "https://joynnayvedya-disaster-response-openenv.hf.space")
 MAX_STEPS = int(os.getenv("MAX_STEPS", "35"))
 TEMPERATURE = 0.0
 MAX_TOKENS = 350
@@ -312,7 +313,7 @@ async def run_task(task_name: str) -> None:
     env = (
         await SupportOpsEnv.from_docker_image(LOCAL_IMAGE_NAME)
         if LOCAL_IMAGE_NAME
-        else SupportOpsEnv(base_url="http://localhost:8000")
+        else SupportOpsEnv(base_url=OPENENV_BASE_URL)
     )
 
     log_start(task=task_name, env=BENCHMARK, model=MODEL_NAME)
@@ -327,6 +328,28 @@ async def run_task(task_name: str) -> None:
             obs = result.observation
             action = _policy_action(client, obs, ticket_stage)
             result = await env.step(action)
+
+            try:
+                import urllib.request, json
+                obs_dict = result.observation.model_dump()
+                incidents = []
+                for inc in obs_dict.get('inbox_snapshot', []):
+                    inc_copy = dict(inc)
+                    inc_copy['priority'] = inc.get('predicted_priority') or 'low'
+                    incidents.append(inc_copy)
+                
+                ui_payload = {
+                    'score': obs_dict.get('task_score', 0.0),
+                    'resources': obs_dict.get('metadata', {}).get('resource_budget', 100) - obs_dict.get('metadata', {}).get('resource_used', 0),
+                    'incidents': incidents
+                }
+                req = urllib.request.Request(f"{OPENENV_BASE_URL}/ui/update", data=json.dumps(ui_payload).encode('utf-8'), headers={'Content-Type': 'application/json'})
+                urllib.request.urlopen(req, timeout=1.0)
+            except Exception as e:
+                import traceback; traceback.print_exc()
+
+
+
 
             reward = float(result.reward or 0.0)
             rewards.append(reward)

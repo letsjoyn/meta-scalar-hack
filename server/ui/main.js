@@ -13,6 +13,43 @@ document.addEventListener("DOMContentLoaded", () => {
         socket: null,
     };
 
+    
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playAlertSound(priority) {
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        if (priority === 'urgent') {
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        } else if (priority === 'high') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        } else {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+    }
+
     const elements = {
         taskSelect: document.getElementById("task-select"),
         mapStyle: document.getElementById("map-style"),
@@ -81,9 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
         li.className = `feed-item feed-${type}`;
         li.innerHTML = `
             <span class="feed-time">${formatNow()}</span>
-            <span class="feed-text">${escapeHtml(text)}</span>
+            <span class="feed-text typewriter-text">${escapeHtml(text)}</span>
         `;
         elements.eventFeed.prepend(li);
+        
+        try { playAlertSound(type === "warn" || type === "error" ? "urgent" : "low"); } catch(e){}
 
         while (elements.eventFeed.children.length > 40) {
             elements.eventFeed.removeChild(elements.eventFeed.lastChild);
@@ -193,13 +232,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             latLngs.push([lat, lon]);
 
-            const marker = L.circleMarker([lat, lon], {
-                radius: 8,
-                color: getPriorityColor(incident.priority),
-                weight: 2,
-                fillColor: getPriorityColor(incident.priority),
-                fillOpacity: 0.65,
-            }).addTo(markerLayer);
+            const iconHtml = `<div class="marker-pin marker-${escapeHtml(incident.priority)}"><div class="marker-ring"></div></div>`;
+            const customIcon = L.divIcon({
+                html: iconHtml,
+                className: '',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8]
+            });
+            const marker = L.marker([lat, lon], { icon: customIcon }).addTo(markerLayer);
 
             marker.bindPopup(
                 `<strong>${escapeHtml(incident.id)}</strong><br>${escapeHtml(incident.message)}<br><em>Priority: ${escapeHtml(incident.priority)}</em>`
@@ -274,6 +314,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = JSON.parse(event.data);
                 if (data.type === "update" && data.payload) {
                     applyPayload(data.payload, "Live");
+                    try {
+                        const hasUrgent = data.payload.incidents && data.payload.incidents.some(i => i.priority === "urgent");
+                        playAlertSound(hasUrgent ? "urgent" : "low");
+                    } catch(e){}
                 }
             } catch {
                 addFeedEntry("Skipped malformed live payload.", "warn");
