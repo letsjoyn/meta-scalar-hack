@@ -29,10 +29,11 @@ from client import SupportOpsEnv
 
 
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
-MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
+MODEL_NAME = os.getenv("MODEL_NAME", "joynnayvedya/disaster-response-trained")
 HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
-OPENENV_BASE_URL = os.getenv("OPENENV_BASE_URL", "https://joynnayvedya-disaster-response-openenv.hf.space")
+OPENENV_BASE_URL = os.getenv("OPENENV_BASE_URL", "http://localhost:8000")
+UI_PUSH_URL = os.getenv("UI_PUSH_URL", "https://joynnayvedya-disaster-response-openenv.hf.space")
 MAX_STEPS = int(os.getenv("MAX_STEPS", "35"))
 TEMPERATURE = 0.0
 MAX_TOKENS = 350
@@ -330,25 +331,25 @@ async def run_task(task_name: str) -> None:
             result = await env.step(action)
 
             try:
-                import urllib.request, json
-                obs_dict = result.observation.model_dump()
-                incidents = []
-                for inc in obs_dict.get('inbox_snapshot', []):
-                    inc_copy = dict(inc)
-                    inc_copy['priority'] = inc.get('predicted_priority') or 'low'
-                    incidents.append(inc_copy)
-                
-                ui_payload = {
-                    'score': obs_dict.get('task_score', 0.0),
-                    'resources': obs_dict.get('metadata', {}).get('resource_budget', 100) - obs_dict.get('metadata', {}).get('resource_used', 0),
-                    'incidents': incidents
-                }
-                req = urllib.request.Request(f"{OPENENV_BASE_URL}/ui/update", data=json.dumps(ui_payload).encode('utf-8'), headers={'Content-Type': 'application/json'})
-                urllib.request.urlopen(req, timeout=1.0)
+                _req = _ur.Request(
+                    f"{OPENENV_BASE_URL}/ui/update",
+                    data=_json.dumps(ui_payload).encode('utf-8'),
+                    headers={'Content-Type': 'application/json'},
+                )
+                _ur.urlopen(_req, timeout=2.0)
+                # Also push to the deployed HF Space UI
+                if UI_PUSH_URL and UI_PUSH_URL != OPENENV_BASE_URL:
+                    try:
+                        _req2 = _ur.Request(
+                            f"{UI_PUSH_URL}/ui/update",
+                            data=_json.dumps(ui_payload).encode('utf-8'),
+                            headers={'Content-Type': 'application/json'},
+                        )
+                        _ur.urlopen(_req2, timeout=2.0)
+                    except Exception:
+                        pass
             except Exception as e:
                 import traceback; traceback.print_exc()
-
-
 
 
             reward = float(result.reward or 0.0)
