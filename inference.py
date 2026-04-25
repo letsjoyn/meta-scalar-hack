@@ -32,6 +32,7 @@ API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-72B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
+OPENENV_BASE_URL = os.getenv("OPENENV_BASE_URL", "http://localhost:8000")
 MAX_STEPS = int(os.getenv("MAX_STEPS", "35"))
 TEMPERATURE = 0.0
 MAX_TOKENS = 350
@@ -312,7 +313,7 @@ async def run_task(task_name: str) -> None:
     env = (
         await SupportOpsEnv.from_docker_image(LOCAL_IMAGE_NAME)
         if LOCAL_IMAGE_NAME
-        else SupportOpsEnv(base_url="http://localhost:8000")
+        else SupportOpsEnv(base_url=OPENENV_BASE_URL)
     )
 
     log_start(task=task_name, env=BENCHMARK, model=MODEL_NAME)
