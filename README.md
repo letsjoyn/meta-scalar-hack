@@ -81,13 +81,6 @@ This project includes **two web experiences**:
 - **OpenEnv default web app:** `/web/`
 - **Custom command center dashboard (OpenStreetMap):** `/ui/`
 
-### Tactical Dashboard Preview
-
-<p align="center">
-  <img src="./image.png" alt="Tactical Response Dashboard preview" width="100%" />
-</p>
-<p align="center"><em>Live command center view with incident map, KPI cards, queue, and operations feed.</em></p>
-
 ### Judge-Friendly URLs
 
 - Space homepage: [Hugging Face Space](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
