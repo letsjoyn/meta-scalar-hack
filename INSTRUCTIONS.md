@@ -116,14 +116,41 @@ curl.exe -X POST "http://127.0.0.1:8000/reset"
 - `http://127.0.0.1:8000/web/`
 - `http://127.0.0.1:8000/ui/`
 
-## 8) How to verify HF deploy worked
+## 8) Pre-push check when branch is ahead
+
+If your branch says "ahead by N commits", inspect exactly what will go in:
+
+```powershell
+git log --oneline origin/main..HEAD
+git diff --name-only origin/main..HEAD
+```
+
+Local run gate before merge/push to `main`:
+
+```powershell
+py smoke_test.py
+Invoke-RestMethod -Method POST -Uri "http://127.0.0.1:8000/reset"
+```
+
+If both pass, safe merge/deploy flow:
+
+```powershell
+git push origin round2-training-proof
+git checkout main
+git pull origin main
+git merge round2-training-proof
+git push origin main
+git push hf main
+```
+
+## 9) How to verify HF deploy worked
 
 1. Open your Space page.
 2. Go to `Logs`.
 3. Confirm build starts and container becomes `Running`.
 4. Open Space URL and test reset/UI.
 
-## 9) If Space breaks after push
+## 10) If Space breaks after push
 
 ### A) Read logs first
 - Build error -> fix dependency/config, push again.
@@ -138,7 +165,7 @@ git checkout -b hotfix-rollback
 git push hf hotfix-rollback:main
 ```
 
-## 10) Token safety (important)
+## 11) Token safety (important)
 
 - Never keep HF token embedded in remote URLs.
 - If exposed, revoke and create a new token immediately.
