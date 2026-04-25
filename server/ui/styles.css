@@ -657,3 +657,23 @@ body {
 
 .marker-low { background: #62dd8d; }
 .marker-low .marker-ring { border-color: #62dd8d; animation: none; }
+
+/* Submitted marker */
+.marker-submitted {
+    background: #4a9d6f;
+    box-shadow: 0 0 6px #4a9d6f;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.75;
+}
+
+/* Submitted incident row */
+.incident-item.submitted {
+    opacity: 0.65;
+    border-left-color: #4a9d6f !important;
+}
+.incident-item.submitted .incident-status {
+    color: #4a9d6f;
+}

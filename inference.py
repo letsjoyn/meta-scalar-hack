@@ -331,13 +331,36 @@ async def run_task(task_name: str) -> None:
             result = await env.step(action)
 
             try:
+                import urllib.request as _ur
+                import json as _json
+                obs_dict = result.observation.model_dump()
+                incidents = []
+                for inc in obs_dict.get('inbox_snapshot', []):
+                    incidents.append({
+                        'id': inc.get('ticket_id'),
+                        'message': inc.get('message', ''),
+                        'priority': inc.get('predicted_priority') or 'medium',
+                        'lat': inc.get('lat'),
+                        'lon': inc.get('lon'),
+                        'submitted': inc.get('submitted', False),
+                        'team': inc.get('predicted_team'),
+                        'score': inc.get('ticket_score', 0.0),
+                    })
+                ui_payload = {
+                    'score': obs_dict.get('task_score', 0.0),
+                    'resources': max(0, 100 - sum(
+                        inc.get('resource_cost_estimate', 0)
+                        for inc in obs_dict.get('inbox_snapshot', [])
+                        if inc.get('submitted')
+                    ) * 4),
+                    'incidents': incidents,
+                }
                 _req = _ur.Request(
                     f"{OPENENV_BASE_URL}/ui/update",
                     data=_json.dumps(ui_payload).encode('utf-8'),
                     headers={'Content-Type': 'application/json'},
                 )
                 _ur.urlopen(_req, timeout=2.0)
-                # Also push to the deployed HF Space UI
                 if UI_PUSH_URL and UI_PUSH_URL != OPENENV_BASE_URL:
                     try:
                         _req2 = _ur.Request(
@@ -348,8 +371,9 @@ async def run_task(task_name: str) -> None:
                         _ur.urlopen(_req2, timeout=2.0)
                     except Exception:
                         pass
-            except Exception as e:
-                import traceback; traceback.print_exc()
+            except Exception:
+                pass
+
 
 
             reward = float(result.reward or 0.0)
