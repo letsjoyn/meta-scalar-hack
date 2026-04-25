@@ -241,3 +241,8 @@ openenv validate
 ---
 
 *Built for the 2026 Meta & Scalar AI Hackathon.*
+
+## Training
+## Results
+## Demo
+## Links
