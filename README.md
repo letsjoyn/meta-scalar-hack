@@ -124,7 +124,7 @@ Training reward went from **0.125 → 0.963**. The model learned to output perfe
 | **Average** | **0.682** | ✅ All passed |
 
 ---
-
+![GRPO Training Reward Curve](plots/grpo_reward_curve.png)
 ## 📰 Ripped From The Headlines: Based on True Events
 
 Every scenario is grounded in a documented real-world disaster. This is not fictional worldbuilding — it is operational simulation.
