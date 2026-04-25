@@ -239,10 +239,44 @@ openenv validate
 ```
 
 ---
+## 🧠 Training
+
+Trained **Qwen2.5-1.5B-Instruct** using **GRPO** (Group Relative Policy Optimization) via TRL + Unsloth on Google Colab T4 GPU.
+
+- **Model:** `unsloth/Qwen2.5-1.5B-Instruct` (4-bit QLoRA, r=16)
+- **Algorithm:** GRPOTrainer (TRL)
+- **Epochs:** 2 | **Steps:** 14
+- **Reward:** Live environment feedback via HF Space API
+
+### Reward Curve
+![GRPO Training Reward Curve](reward_curve.png)
+
+---
+
+## 📊 Results
+
+| Agent | Easy | Medium | Hard | **Avg** |
+|-------|------|--------|------|---------|
+| Heuristic Baseline | 0.704 | 0.683 | 0.660 | **0.682** |
+| GRPO Trained (Qwen2.5-1.5B) | - | - | - | **TBD** |
+
+> Trained model learned valid team names (`rescue`, `medical`, etc.) and priority levels — baseline untrained model hallucinated invalid values like `"emergency"`, `"utility repair"`.
+
+---
+
+## 🎬 Demo
+
+[Add YouTube link here]
+
+---
+
+## 🔗 Links
+
+| Resource | URL |
+|----------|-----|
+| 🚀 HF Space (Environment) | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
+| 🧠 Trained Model | [joynnayvedya/disaster-response-trained](https://huggingface.co/joynnayvedya/disaster-response-trained) |
+| 💻 GitHub | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
+| 📓 Colab Notebook | [Add link after downloading] |
 
 *Built for the 2026 Meta & Scalar AI Hackathon.*
-
-## Training
-## Results
-## Demo
-## Links
