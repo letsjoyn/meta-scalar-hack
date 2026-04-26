@@ -275,10 +275,11 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 # → http://localhost:8000/ui/
 ```
 
-### 2. Run the Agent — Using the Free HF Router (Qwen 72B)
+### 2. Run the Agent ✅ (Recommended for Judges)
+
+Uses the free HF Router with Qwen 72B — no dedicated endpoint needed, works for anyone with an HF token:
 
 ```powershell
-# Windows PowerShell — against the live HF Space
 $env:OPENENV_BASE_URL = "https://joynnayvedya-disaster-response-openenv.hf.space"
 $env:API_BASE_URL     = "https://router.huggingface.co/v1"
 $env:MODEL_NAME       = "Qwen/Qwen2.5-72B-Instruct"
@@ -287,24 +288,21 @@ $env:HF_TOKEN         = "hf_YOUR_TOKEN"
 py inference.py
 ```
 
-### 3. Run the Agent — Using the Trained V2 Model (Dedicated TGI Endpoint)
+> **To run against a local server** (faster): set `$env:OPENENV_BASE_URL = "http://localhost:8000"` and run the server from Step 1 first.
 
-This uses the fine-tuned `disaster-response-v2` model via a dedicated HF Inference Endpoint:
+### 3. Run with the Fine-Tuned V2 Model (Our Training Evaluation)
+
+We evaluated our `disaster-response-v2` LoRA adapter using a dedicated HF Inference Endpoint (TGI).
+To replicate: deploy `joynnayvedya/disaster-response-v2` to a [HF Inference Endpoint](https://huggingface.co/inference-endpoints/dedicated), then:
 
 ```powershell
 $env:OPENENV_BASE_URL = "https://joynnayvedya-disaster-response-openenv.hf.space"
-$env:API_BASE_URL     = "https://gdfzs8jd2ezi6rjh.us-east-1.aws.endpoints.huggingface.cloud/v1"
+$env:API_BASE_URL     = "https://YOUR_ENDPOINT.endpoints.huggingface.cloud/v1"
 $env:MODEL_NAME       = "tgi"
 $env:HF_TOKEN         = "hf_YOUR_TOKEN"
 
 py inference.py
 ```
-
-> **To run against the local server** (faster, no network latency):
-> ```powershell
-> $env:OPENENV_BASE_URL = "http://localhost:8000"
-> py inference.py
-> ```
 
 ### 4. Validate OpenEnv Compliance
 
@@ -314,7 +312,7 @@ openenv validate
 
 ### 5. Run Training Notebook
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/grpo_disaster_training%20(1).ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb)
 
 ---
 
