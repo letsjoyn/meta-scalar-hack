@@ -48,8 +48,17 @@ tags:
 | 🖥️ **Live Tactical Dashboard** | [Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all) |
 | 🧠 **Trained Model (v2)** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
 | 📓 **Training Notebook (Colab)** | [Open in Google Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb) |
-| 📰 **Mini Blog / Write-up** | *(link coming — add your HF blog URL here)* |
+| 🎬 **Demo Video (YouTube)** | [Watch on YouTube →](YOUR_YOUTUBE_LINK_HERE) |
 | 💻 **GitHub Source** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
+
+---
+
+## 🎬 Demo
+
+> **Click the thumbnail below to watch the live demo** — the agent triages 15 simultaneous disaster incidents in real-time on the deployed command center dashboard.
+
+[![🚨 Watch Demo — Disaster Response AI Agent](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](YOUR_YOUTUBE_LINK_HERE)
+
 
 ---
 
