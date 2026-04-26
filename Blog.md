@@ -1,78 +1,50 @@
 # Teaching an LLM to Triage Disasters 🚨
-### How we built a real RL environment for emergency response — and what we learned when the model hallucinated an entire rescue team
+### How we built a real-world RL environment for emergency response — and what we learned when the model hallucinated an entire rescue team.
 
 *Built for the 2026 Meta & Scalar AI Hackathon, Bangalore.*
 
 ---
 
-## It started with a question nobody was asking
+## 🌪️ It started with a question nobody was asking
 
-What if an LLM had to make the same decisions as the person who picks up the phone during a catastrophe?
+What if an LLM had to make the same decisions as the person who picks up the phone during a massive catastrophe?
 
-Not "write me a poem." Not "solve this math problem."
+Not "write me a poem." Not "solve this math problem." 
 
 **"The dam is overflowing. 300 people are on rooftops. You have one helicopter. What do you do?"**
 
-That's the problem we built for.
+That's the problem we built for. We didn't want to build another "toy" environment. We wanted to build a **flight simulator for disaster operations.**
 
 ---
 
-## The Environment: 15 Real Disasters, 3 Difficulty Tiers
+## 🏗️ The Environment: 15 Real Disasters, 3 Difficulty Tiers
 
-We built **Disaster Response Coordination OpenEnv** — an RL environment where an AI agent acts as an Emergency Incident Commander inside a live Emergency Operations Center.
+We built **Disaster Response Coordination OpenEnv** — an RL environment where an AI agent acts as an Emergency Incident Commander inside a live Emergency Operations Center (EOC).
 
-The agent receives a queue of incident tickets. Real ones. Modeled after:
-
-- 🌊 **2018 Kerala Floods** — 483 dead, the largest evacuation since Indian Independence. Dam spillway overflow. Communication blackouts. We recreated the exact decision tree EOC coordinators faced.
-- ☠️ **2020 Vizag LG Polymers Gas Leak** — 11 dead, 1000+ hospitalized. A toxic plume drifting over residential areas. Do you evacuate north or south? Wind direction matters.
-- ⚡ **2012 North India Grid Failure** — 620 million people without power. Cold-chain medicines failing in hospitals across 7 states. Which hospital gets the generator truck first?
+We modeled our 15 scenarios after the exact operational failures seen in history:
+- 🌊 **2018 Kerala Floods** — The basis for our *Communication Tower Blackouts* and *Dam Spillway Overflows*. We forced the AI to orchestrate multi-district rescue logistics without digital comms.
+- ☠️ **2020 Vizag Gas Leak** — Modeled in our Hard Tier as a *Chemical Plant Fire*, requiring the AI to prioritize immediate toxic plume evacuations before secondary explosions.
+- ⚡ **2012 North India Grid Failure** — The largest blackout in history. Inspired our scenarios involving cascading *Cold-Chain Medicine Failures* in hospitals.
 
 Every ticket the agent sees is based on a real event. Every decision has real stakes baked into the reward function.
 
-For each incident ticket, the agent must execute a precise 4-step workflow:
+---
 
-```
-classify → set_priority → draft_reply → submit_ticket
-```
+## 💡 Built for the "Winning Tip"
 
-Miss a step? Penalty. Wrong team? Partial credit. Right team, wrong priority? You still lose something. **There is no lucky guess that beats the system.**
+The hackathon organizers dropped a bombshell tip: *"Focus on the quality of your envs and reward signals... iterate on training runs... higher chance of winning."*
+
+We took this to heart. We didn't just build a task; we built a **curriculum**.
+
+1.  **Dense, High-Quality Reward Signals**: Most environments give a "0 or 1" score at the very end. That's a nightmare for small models. We built a **5-signal reward function**. If the AI gets the team right but the priority wrong, it gets partial credit (`+0.40`). This "talks" to the AI, helping **7B/8B models** learn where huge models would just struggle.
+2.  **Optimized for Iteration**: Our environment is a lightning-fast FastAPI server. An agent can run hundreds of training episodes per hour. This allows for the rapid iteration the judges are looking for.
+3.  **Unhackable Logic**: We built explicit defenses against "reward hacking." Infinite loops, re-routing tickets after submission, and blowing resource budgets all trigger severe penalties.
 
 ---
 
-## Architecture
+## 🧠 Training: The Fog of War
 
-![Architecture Diagram](plots/architecture_diagram.png)
-
-The agent is fully decoupled from the environment. It sees only what a real EOC coordinator would see: a ticket queue, a resource budget, and the clock ticking.
-
----
-
-## The Reward Function: Built to Be Unhackable
-
-Most RL environments get reward-hacked in under 100 steps. We designed around that from day one.
-
-```
-ticket_score = 0.40 × team_routing
-             + 0.30 × priority_score  
-             + 0.30 × reply_quality
-
-task_score   = avg(ticket_scores)
-             - invalid_action_penalty   (max 0.15)
-             - loop_detection_penalty   (max 0.10)
-             - reroute_penalty          (max 0.12)
-             - budget_overflow_penalty  (max 0.18)
-             - time_pressure_multiplier (Hard mode: 0.75×)
-```
-
-5 independent signals. Dense partial rewards at every step. No sparse end-of-episode surprise. If you get the team right but fumble the priority, you learn something. If you get everything right but blow the resource budget, you still lose points.
-
-*"If your RL environment can be gamed, you haven't built a task — you've built a loophole."*
-
----
-
-## Training: Where Things Got Interesting
-
-We fine-tuned **Qwen2.5-7B-Instruct** using **GRPO** (Group Relative Policy Optimization) via Hugging Face TRL + Unsloth on a Colab GPU.
+We fine-tuned **Qwen2.5-7B-Instruct** using **GRPO** (Group Relative Policy Optimization) via Hugging Face TRL + Unsloth.
 
 The first thing we discovered? **The base model immediately hallucinated an entirely new rescue team.**
 
@@ -80,98 +52,47 @@ The first thing we discovered? **The base model immediately hallucinated an enti
 ❌  team: "emergency_services"   (not in the valid set)
 ❌  team: "utility repair"       (the agent made this up)
 ❌  priority: "very-high"        (also made up)
-❌  priority: "immediately"      (still wrong)
 ```
 
-The model had read enough emergency management documents to know the *vibe* of disaster response — but it had no idea what valid actions actually existed in our environment.
+The model had read enough emergency manuals to know the *vibe* of disaster response, but it had no idea what valid actions actually existed in our environment.
 
-**That's exactly the kind of failure RL is designed to fix.**
+**That's exactly the kind of failure RL is designed to fix.** 
 
-After 3 training stages and 135 steps:
-
-```
-✅  team: "rescue"
-✅  priority: "urgent"  
-✅  JSON output: perfectly structured
-```
+By connecting our training loop directly to our **live Hugging Face Space API**, the model received real-world feedback in real-time. After 135 steps, it learned to stay within the strict operational boundaries of an EOC.
 
 ---
 
-## 📊 Training Results — GRPO v2 (3-Stage, 135 Steps)
+## 📊 Results: Heuristic vs. RL
 
-**Reward Curve** — Training reward across all 135 steps:
+| Agent | Avg Score | Status |
+|-------|-----------|--------|
+| Deterministic Baseline | **0.682** | ✅ Hardcoded Rules |
+| **GRPO Qwen2.5-7B v2** | **0.636** | ✅ Learned Behavior |
 
-![Reward Curve](plots/grpo_reward_curve.png)
-
-**Epoch Comparison** — Average reward per training epoch:
-
-![Epoch Comparison](plots/epoch_comparison.png)
-
-**Before vs After Training** — Direct behavioral comparison:
-
-![Before vs After](plots/before_after_comparison.png)
-
-**Training Hyperparameters** — Full config used for v2:
-
-![Training Parameters](plots/training_params.png)
+Our RL model scores within **4.6%** of a perfect hardcoded baseline. While the baseline uses "if/else" rules, our model is actually **reasoning**. It reads the incident, drafts a unique handoff note, and makes a judgment call—all without a single line of hardcoded regex.
 
 ---
 
-## Benchmark Results
+## 🖥️ The Tactical Dashboard: Seeing is Believing
 
-| Agent | Easy | Medium | Hard | **Avg** |
-|-------|------|--------|------|---------|
-| Heuristic Baseline (hardcoded rules) | 0.704 | 0.683 | 0.660 | **0.682** |
-| **GRPO Qwen2.5-7B v2 (ours)** | 0.641 | 0.665 | 0.601 | **0.636** |
+We didn't just want to show logs. We built a **Tactical Command Dashboard** that updates via WebSocket.
 
-✅ All 3 tiers: PASS PASS PASS
+**[▶️ View the Command Center Live](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
 
-The heuristic baseline uses hand-crafted regex patterns and keyword matching. Zero generalisation. It knows exactly what "flood" maps to because a human engineer hardcoded it.
-
-Our model generates unique, contextually accurate handoff notes for every incident — no hardcoded rules, no templates. The fact that it stays within 4.6% of a perfect hardcoded baseline while doing *actual reasoning* is the result that matters.
+Judges can watch the agent process tickets in real-time on a map, with radar pulses for urgent incidents and an AI Incident Analyst (ARIA) providing secondary context.
 
 ---
 
-## The Dashboard
+## 🏆 Conclusion
 
-We built a military-style tactical command center that updates in real-time via WebSocket as the agent processes tickets.
+We believe the future of AI isn't just "chatting"—it's **acting**. By building a high-stakes, high-quality RL environment, we've created a space where AI can practice saving lives before it ever has to do it for real.
 
-**[▶️ Open the Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
-
-- 🗺️ OpenStreetMap with color-coded incident markers
-- ⚡ ARIA — AI Incident Analyst powered by Gemini
-- 📊 Real-time score tracker, resource budget bar, team routing feed
-- 🔔 Operations feed with audio alerts
+*Built by the Meta-Scalar team for the 2026 Grand Finale, Bangalore.*
 
 ---
-
-## Try It Yourself
-
-```bash
-git clone https://github.com/letsjoyn/meta-scalar-hack.git
-cd meta-scalar-hack
-pip install -e .
-
-$env:OPENENV_BASE_URL = "https://joynnayvedya-disaster-response-openenv.hf.space"
-$env:API_BASE_URL     = "https://router.huggingface.co/v1"
-$env:MODEL_NAME       = "Qwen/Qwen2.5-72B-Instruct"
-$env:HF_TOKEN         = "hf_YOUR_TOKEN"
-py inference.py
-```
-
----
-
-## Links
-
-| Resource | URL |
-|----------|-----|
-| 🤗 HF Space | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
-| 🧠 Trained Model | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
-| 📓 Training Notebook | [Open in Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb) |
-| 💻 GitHub | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
-
----
-
-*Built for the 2026 Meta & Scalar AI Hackathon — Grand Finale, Bangalore.*
-
-*Every scenario based on a real disaster. Every reward signal designed to be unhackable.*
+### 🔗 Links
+- 🤗 [HF Space (Environment)](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
+- 🖥️ [Tactical Dashboard](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)
+- 🧠 [Trained Model (v2)](https://huggingface.co/joynnayvedya/disaster-response-v2)
+- 📓 [Training Notebook](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb)
+- 💻 [GitHub Source](https://github.com/letsjoyn/meta-scalar-hack)

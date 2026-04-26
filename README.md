@@ -216,7 +216,7 @@ The reward function connected directly to our live HF Space. Every training step
 team: "emergency_services"   ❌  (not in the valid set)
 team: "utility repair"       ❌
 priority: "very-high"        ❌  (not in the valid set)
-priority: "higher"           ❌
+priority: "immediately"      ❌
 ```
 
 **After training**, the model learned strict valid action spaces:
