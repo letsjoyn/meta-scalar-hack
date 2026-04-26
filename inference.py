@@ -185,7 +185,16 @@ def _build_prompt(task_name: str, objective: str, ticket_id: str, ticket_message
 
 def _parse_action(raw: str, current_ticket_id: str) -> SupportOpsAction:
     try:
-        obj = json.loads(raw)
+        cleaned = raw.strip()
+        if cleaned.startswith("```json"):
+            cleaned = cleaned[7:]
+        elif cleaned.startswith("```"):
+            cleaned = cleaned[3:]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3]
+        cleaned = cleaned.strip()
+
+        obj = json.loads(cleaned)
         if not isinstance(obj, dict):
             raise ValueError("model output not dict")
     except Exception:
