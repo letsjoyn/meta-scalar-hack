@@ -101,6 +101,16 @@ After training, the model learned the strict valid action spaces:
 
 However, we observed **sparse reward collapse** — a known RL failure mode where a small model (7B at 4-bit) struggles to optimize across a multi-step workflow with interdependent rewards. **This validates our environment's quality:** it is genuinely difficult enough to expose real RL failure modes that require advanced prompt engineering, larger models, or longer training runs to overcome.
 
+### 🧠 Training Results — GRPO v2 (3-Stage, 135 Steps)
+
+![Reward Curve](plots/grpo_reward_curve.png)
+
+![Epoch Comparison](plots/epoch_comparison.png)
+
+![Before vs After](plots/before_after_comparison.png)
+
+![Training Parameters](plots/training_params.png)
+
 ### Baseline vs. Trained Results
 
 | Agent | Easy | Medium | Hard | **Avg Score** |
