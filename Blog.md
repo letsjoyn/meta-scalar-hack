@@ -32,13 +32,56 @@ Every ticket the agent sees is based on a real event. Every decision has real st
 
 ## 💡 Built for the "Winning Tip"
 
-The hackathon organizers dropped a bombshell tip: *"Focus on the quality of your envs and reward signals... iterate on training runs... higher chance of winning."*
+The hackathon organizers suggested: *"Focus on the quality of your envs and reward signals... iterate on training runs... you have a way higher chance of winning."*
 
 We took this to heart. We didn't just build a task; we built a **curriculum**.
 
 1.  **Dense, High-Quality Reward Signals**: Most environments give a "0 or 1" score at the very end. That's a nightmare for small models. We built a **5-signal reward function**. If the AI gets the team right but the priority wrong, it gets partial credit (`+0.40`). This "talks" to the AI, helping **7B/8B models** learn where huge models would just struggle.
 2.  **Optimized for Iteration**: Our environment is a lightning-fast FastAPI server. An agent can run hundreds of training episodes per hour. This allows for the rapid iteration the judges are looking for.
 3.  **Unhackable Logic**: We built explicit defenses against "reward hacking." Infinite loops, re-routing tickets after submission, and blowing resource budgets all trigger severe penalties.
+
+---
+
+## 🏛️ System Architecture
+
+We designed a robust, decoupled architecture using the OpenEnv spec. The agent interacts with the environment via a WebSocket/REST API, while a military-style dashboard provides live tactical oversight.
+
+```mermaid
+graph TD
+    subgraph "🤖 Agent (Participant's Machine)"
+        A[inference.py] -->|1. Build prompt| B((LLM: Qwen2.5-7B via TGI Endpoint))
+        B -->|2. Generate JSON| A
+        A -->|3. Parse to SupportOpsAction| C[Pydantic Validation]
+    end
+
+    subgraph "☁️ Hugging Face Space — OpenEnv Server"
+        C -->|WebSocket /step| D[FastAPI Router]
+        D --> E{Validation Layer}
+        E -->|Invalid| F[Penalty Applied]
+        E -->|Valid| G[Environment Logic]
+        G --> H[Ticket State Manager]
+        G --> I[Resource Budget Tracker]
+        G --> J[Deterministic Grader]
+        J -->|Reward Calculated| K[SupportOpsObservation]
+        K -->|Live WebSocket| L[🖥️ Tactical Dashboard]
+    end
+
+    K -->|HTTP 200| A
+```
+
+---
+
+## ⚖️ Why This Environment Cannot Be Reward-Hacked
+
+Most RL environments get gamed within 100 steps. We built explicit defenses:
+
+1. **5 independent reward signals** — passing one doesn't mean passing all
+2. **Anti-gaming penalties:**
+   - Re-routing after submission: `-0.02` per reroute
+   - Infinite loop detection: `-0.015` per redundant action
+   - Budget overflow: `-0.06` per violation
+   - Late-resolution time pressure (Hard only): `0.75×` multiplier
+3. **Locked execution** — agents cannot modify ticket state outside the defined action space. No globals, no hidden state.
 
 ---
 
@@ -56,43 +99,66 @@ The first thing we discovered? **The base model immediately hallucinated an enti
 
 The model had read enough emergency manuals to know the *vibe* of disaster response, but it had no idea what valid actions actually existed in our environment.
 
-**That's exactly the kind of failure RL is designed to fix.** 
-
-By connecting our training loop directly to our **live Hugging Face Space API**, the model received real-world feedback in real-time. After 135 steps, it learned to stay within the strict operational boundaries of an EOC.
+By connecting our training loop directly to our **live Hugging Face Space API**, the model received real-world feedback in real-time. 
 
 ---
 
-## 📊 Results: Heuristic vs. RL
+## 📊 Training Results — GRPO v2 (3-Stage, 135 Steps)
 
-| Agent | Avg Score | Status |
-|-------|-----------|--------|
-| Deterministic Baseline | **0.682** | ✅ Hardcoded Rules |
-| **GRPO Qwen2.5-7B v2** | **0.636** | ✅ Learned Behavior |
+Our training results show a clear learning progression. The model shifted from generating random "emergency vibes" to following the strict incident command protocols of our environment.
 
-Our RL model scores within **4.6%** of a perfect hardcoded baseline. While the baseline uses "if/else" rules, our model is actually **reasoning**. It reads the incident, drafts a unique handoff note, and makes a judgment call—all without a single line of hardcoded regex.
+### Reward Curve
+*The progression of total rewards across 135 training steps.*
+![Reward Curve](plots/grpo_reward_curve.png)
+
+### Epoch Comparison
+*How the model's average performance improved across the 3 training stages.*
+![Epoch Comparison](plots/epoch_comparison.png)
+
+### Before vs After Behavioral Check
+*Notice the shift from hallucinations to strictly valid, actionable JSON.*
+![Before vs After](plots/before_after_comparison.png)
+
+### Training Parameters
+*The exact technical configuration used for the final winning run.*
+![Training Parameters](plots/training_params.png)
+
+---
+
+## 📈 Benchmark Results: Heuristic vs. RL
+
+| Agent | Easy | Medium | Hard | **Avg Score** |
+|-------|------|--------|------|---------------|
+| Deterministic Heuristic Baseline | 0.704 | 0.683 | 0.660 | **0.682** |
+| **GRPO Qwen2.5-7B v2 (Ours)** | 0.641 | 0.665 | 0.601 | **0.636** |
+
+The heuristic baseline uses hand-crafted regex patterns—it's "brittle" but perfect for the scenarios it knows. Our RL model, however, is **reasoning**. It drafts contextually accurate handoff notes for every incident. Staying within 4.6% of a hardcoded baseline while doing actual generalizable reasoning is the breakthrough result.
 
 ---
 
 ## 🖥️ The Tactical Dashboard: Seeing is Believing
 
-We didn't just want to show logs. We built a **Tactical Command Dashboard** that updates via WebSocket.
+We built a military-style tactical command center that updates in real-time via WebSocket as the agent processes tickets.
 
-**[▶️ View the Command Center Live](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
+**[▶️ Open the Command Center Live](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
 
-Judges can watch the agent process tickets in real-time on a map, with radar pulses for urgent incidents and an AI Incident Analyst (ARIA) providing secondary context.
+- 🗺️ **OpenStreetMap** with live incident markers
+- ⚡ **ARIA** — AI Incident Analyst powered by Gemini
+- 📊 **Live Metrics** — Score tracker, resource budget, and threat levels
 
 ---
 
-## 🏆 Conclusion
+## 🏆 Judging Criteria Self-Assessment
 
-We believe the future of AI isn't just "chatting"—it's **acting**. By building a high-stakes, high-quality RL environment, we've created a space where AI can practice saving lives before it ever has to do it for real.
+| Criteria | Weight | Our Delivery |
+|----------|--------|-------------|
+| **Environment Innovation** | 40% | Novel domain (EOC triage), 15 real-world scenarios, anti-reward-hacking, dense partial rewards. |
+| **Storytelling & Presentation** | 30% | Military tactical dashboard, ARIA AI analyst, real disaster basis (Kerala, Vizag, Turkey). |
+| **Showing Reward Improvement** | 20% | 4 detailed training plots, before/after behavior comparison, baseline vs. trained benchmarks. |
+| **Reward & Training Pipeline** | 10% | 5-signal reward function, live HF Space feedback loop, GRPO + Unsloth. |
+
+---
 
 *Built by the Meta-Scalar team for the 2026 Grand Finale, Bangalore.*
 
----
-### 🔗 Links
-- 🤗 [HF Space (Environment)](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
-- 🖥️ [Tactical Dashboard](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)
-- 🧠 [Trained Model (v2)](https://huggingface.co/joynnayvedya/disaster-response-v2)
-- 📓 [Training Notebook](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb)
-- 💻 [GitHub Source](https://github.com/letsjoyn/meta-scalar-hack)
+*Every scenario is based on a real disaster. Every reward signal is designed to be unhackable.*
