@@ -40,6 +40,12 @@ tags:
 
 ---
 
+## 🎯 Hackathon Theme: Theme #3.1 - Professional Tasks
+
+This environment targets **Theme #3.1 (Professional Tasks: Emergency Operations)**. It moves beyond "chatting" and requires the agent to perform real, hard work: maintaining a persistent world model of 15 simultaneous disasters, managing a finite resource budget, and orchestrating a multi-step triage workflow where shortcuts lead to immediate failure.
+
+---
+
 ## 📌 Quick Links (All Submission Materials)
 
 | Material | Link |

@@ -17,6 +17,12 @@ That's the problem we built for. We didn't want to build another "toy" environme
 
 ---
 
+## 🎯 The Theme: Professional Tasks (#3.1)
+
+This project targets the **Professional Tasks** theme of the 2026 OpenEnv Hackathon. We didn't want to build another toy environment. We wanted to build a **flight simulator for disaster operations**—one that requires real world-modeling, resource budgeting, and structured decision-making.
+
+---
+
 ## 🏗️ The Environment: 15 Real Disasters, 3 Difficulty Tiers
 
 We built **Disaster Response Coordination OpenEnv** — an RL environment where an AI agent acts as an Emergency Incident Commander inside a live Emergency Operations Center (EOC).
