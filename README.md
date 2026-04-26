@@ -224,9 +224,7 @@ We observed **sparse reward collapse** — a known RL failure mode where a small
 **Training Parameters** — Full hyperparameter configuration used for the final v2 run:
 
 ![Training Parameters](plots/training_params.png)
-
 ---
-
 ## 📈 Benchmark Results
 
 | Agent | Easy | Medium | Hard | **Avg Score** | Status |
