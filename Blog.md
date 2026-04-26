@@ -1,5 +1,3 @@
-<![CDATA[<div align="center">
-
 # 🚨 Teaching an LLM to Triage Disasters
 
 ### *How we built a real-world RL environment for emergency response — and what happened when the model hallucinated an entire rescue team.*
@@ -11,8 +9,6 @@
 [![Open in Colab](https://img.shields.io/badge/📓%20Training-Open%20in%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/Disaster_Response_Training.ipynb)
 
 *Built for the 2026 Meta & Scalar AI Hackathon — Grand Finale, Bangalore.*
-
-</div>
 
 ---
 
@@ -299,7 +295,7 @@ Honest engineering means being transparent about what we'd improve:
 |----------|--------|-------------------|
 | **Environment Innovation** | 40% | Novel domain (emergency operations triage), 15 real-world scenarios, 5-signal composite reward, anti-gaming defenses at every layer, resource budget system, 3 difficulty tiers with real disaster basis |
 | **Storytelling & Presentation** | 30% | Military tactical dashboard with live WebSocket updates, ARIA AI analyst, YouTube demo, this blog write-up, architecture diagrams, per-ticket analysis |
-| **Showing Improvement in Rewards** | 20% | 4 training plots, before/after behavioral comparison, baseline vs. trained benchmark table, honest discussion of sparse reward collapse |
+| **Showing Improvement in Rewards** | 20% | 4 training plots, before/after behavioral comparison, benchmark table, honest discussion of sparse reward collapse |
 | **Reward & Training Pipeline** | 10% | Dense partial rewards, live HF Space feedback loop, GRPO + Unsloth + TRL, Colab-runnable notebook, deterministic grading |
 
 ---
@@ -336,23 +332,8 @@ py inference.py
 
 ---
 
-## Final Thought
-
-Most RL environments train agents to play games. We trained one to save lives.
-
-Every scenario in this environment is based on a real disaster where real coordination failures contributed to real casualties. We don't claim our model is ready for deployment — it's a 7B model trained for 135 steps on a free GPU. But we do claim that **the environment itself is production-grade**: dense rewards, anti-gaming logic, resource constraints, and operational realism that would challenge far larger models.
-
-The next step isn't a bigger model. It's a longer training run.
-
----
-
-<div align="center">
-
 *Built with urgency for the 2026 Meta & Scalar AI Hackathon — Grand Finale, Bangalore.*
 
 *Every scenario is based on a real disaster. Every reward signal is designed to be unhackable.*
 
 ⭐ *If this inspired you, please star [OpenEnv](https://github.com/ScalarHQ/openenv) — the framework that made this possible.*
-
-</div>
-]]>
