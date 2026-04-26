@@ -134,6 +134,18 @@ We use **dense, partial rewards at every step**. No sparse end-of-episode signal
 
 ---
 
+## 💡 Built for the "Winning Tip"
+
+The hackathon organizers suggested: *"Focus on the quality of your envs and reward signals... iterate on training runs... you have a way higher chance of winning."* 
+
+We built this environment specifically to satisfy these winning principles:
+
+1.  **Dense, High-Quality Reward Signals**: We don't use binary pass/fail logic. We reward agents for every correct sub-task (`+0.40` for team, `+0.30` for priority). This allows **smaller, 7B/8B models** (like Llama-3-8B or Qwen2-7B) to learn efficiently from partial success.
+2.  **Optimized for Rapid Iteration**: The environment is a lightweight FastAPI server that responds in milliseconds. You can run hundreds of training episodes per hour, perfect for iterating on training runs instead of waiting for a "huge" model to finish.
+3.  **Compute-Budget Friendly**: Because we use strictly typed Pydantic models and stateless logic, the environment is easy to pair with **QLoRA** training or other memory-efficient techniques.
+
+---
+
 ## 🏛️ Architecture
 
 ```mermaid
