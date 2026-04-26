@@ -44,12 +44,12 @@ tags:
 
 | Material | Link |
 |----------|------|
+| 🎬 **Demo Video (YouTube)** | [Watch on YouTube →](https://www.youtube.com/watch?v=0ldfDtNAILc) |
 | 🤗 **HF Space (Live Environment)** | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
 | 🖥️ **Live Tactical Dashboard** | [Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all) |
 | 🧠 **Trained Model (v2)** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
 | 📓 **Training Notebook (Colab)** | [Open in Google Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb) |
 | 📝 **Write-up / Blog** | [Blog.md](Blog.md) |
-| 🎬 **Demo Video (YouTube)** | [Watch on YouTube →](https://www.youtube.com/watch?v=0ldfDtNAILc) |
 | 💻 **GitHub Source** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
 
 ---
