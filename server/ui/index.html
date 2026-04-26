@@ -119,7 +119,16 @@
 
                 <section class="panel incident-panel">
                     <div class="panel-head">
-                        <h2>Incident Queue</h2>
+                        <div class="panel-head-row">
+                            <h2>Incident Queue <span id="incident-badge" class="incident-badge">0</span></h2>
+                            <div class="threat-bar-wrap">
+                                <span class="threat-label">THREAT</span>
+                                <div class="threat-bar">
+                                    <div id="threat-fill" class="threat-fill"></div>
+                                </div>
+                                <span id="threat-level-text" class="threat-level-text">LOW</span>
+                            </div>
+                        </div>
                     </div>
                     <div id="priority-filters" class="priority-filters">
                         <button type="button" class="priority-btn active" data-priority="all">All</button>
@@ -140,9 +149,24 @@
             </aside>
         </section>
     </main>
+    <!-- AI Analyst Modal -->
+    <div id="ai-modal" class="ai-modal hidden">
+        <div class="ai-modal-inner">
+            <div class="ai-modal-header">
+                <div class="ai-modal-title-block">
+                    <span class="ai-modal-kicker">⚡ ARIA — AI Incident Analyst</span>
+                    <span class="ai-modal-status" id="ai-modal-status">STANDBY</span>
+                </div>
+                <button id="ai-modal-close" class="ai-modal-close">✕ CLOSE</button>
+            </div>
+            <div class="ai-modal-incident" id="ai-modal-incident-text"></div>
+            <div class="ai-modal-body" id="ai-modal-body"></div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script src="main.js?v=20260405a"></script>
+    <script src="main.js?v=20260426c"></script>
 </body>
 
 </html>

@@ -300,12 +300,14 @@ def _policy_action(
 # ── Main loop ────────────────────────────────────────────────────────────
 
 
-async def run_task(task_name: str) -> None:
+async def run_task_tracked(task_name: str) -> dict:
+    """Run a task and return structured result dict for reporting."""
     rewards: List[float] = []
     steps_taken = 0
     final_score = 0.0
     success = False
     ticket_stage: Dict[str, int] = {}
+    ticket_results: List[dict] = []
 
     client: Optional[OpenAI] = None
     if HF_TOKEN:
@@ -330,74 +332,64 @@ async def run_task(task_name: str) -> None:
             action = _policy_action(client, obs, ticket_stage)
             result = await env.step(action)
 
+            # UI push (best-effort)
             try:
-                import urllib.request as _ur
-                import json as _json
+                import urllib.request as _ur, json as _json
                 obs_dict = result.observation.model_dump()
                 incidents = []
-                for inc in obs_dict.get('inbox_snapshot', []):
+                for inc in obs_dict.get("inbox_snapshot", []):
                     incidents.append({
-                        'id': inc.get('ticket_id'),
-                        'message': inc.get('message', ''),
-                        'priority': inc.get('predicted_priority') or 'medium',
-                        'lat': inc.get('lat'),
-                        'lon': inc.get('lon'),
-                        'submitted': inc.get('submitted', False),
-                        'team': inc.get('predicted_team'),
-                        'score': inc.get('ticket_score', 0.0),
+                        "id": inc.get("ticket_id"),
+                        "message": inc.get("message", ""),
+                        "priority": inc.get("predicted_priority") or "medium",
+                        "lat": inc.get("lat"), "lon": inc.get("lon"),
+                        "submitted": inc.get("submitted", False),
+                        "team": inc.get("predicted_team"),
+                        "score": inc.get("ticket_score", 0.0),
                     })
                 ui_payload = {
-                    'score': obs_dict.get('task_score', 0.0),
-                    'resources': max(0, 100 - sum(
-                        inc.get('resource_cost_estimate', 0)
-                        for inc in obs_dict.get('inbox_snapshot', [])
-                        if inc.get('submitted')
+                    "score": obs_dict.get("task_score", 0.0),
+                    "resources": max(0, 100 - sum(
+                        inc.get("resource_cost_estimate", 0)
+                        for inc in obs_dict.get("inbox_snapshot", [])
+                        if inc.get("submitted")
                     ) * 4),
-                    'incidents': incidents,
+                    "incidents": incidents,
                 }
-                _req = _ur.Request(
+                _ur.urlopen(_ur.Request(
                     f"{OPENENV_BASE_URL}/ui/update",
-                    data=_json.dumps(ui_payload).encode('utf-8'),
-                    headers={'Content-Type': 'application/json'},
-                )
-                _ur.urlopen(_req, timeout=2.0)
+                    data=_json.dumps(ui_payload).encode(), headers={"Content-Type": "application/json"}
+                ), timeout=2.0)
                 if UI_PUSH_URL and UI_PUSH_URL != OPENENV_BASE_URL:
                     try:
-                        _req2 = _ur.Request(
+                        _ur.urlopen(_ur.Request(
                             f"{UI_PUSH_URL}/ui/update",
-                            data=_json.dumps(ui_payload).encode('utf-8'),
-                            headers={'Content-Type': 'application/json'},
-                        )
-                        _ur.urlopen(_req2, timeout=2.0)
+                            data=_json.dumps(ui_payload).encode(), headers={"Content-Type": "application/json"}
+                        ), timeout=2.0)
                     except Exception:
                         pass
+                # Capture ticket results for report
+                for inc in incidents:
+                    if inc["submitted"]:
+                        existing = next((t for t in ticket_results if t["id"] == inc["id"]), None)
+                        if not existing:
+                            ticket_results.append(inc)
             except Exception:
                 pass
-
-
 
             reward = float(result.reward or 0.0)
             rewards.append(reward)
             steps_taken = step
-
             err = result.observation.last_action_error
-            log_step(
-                step=step,
-                action=_safe_action_string(
-                    action.model_dump(exclude_none=True, exclude={"metadata"})
-                ),
-                reward=reward,
-                done=result.done,
-                error=err,
-            )
-
+            log_step(step=step, action=_safe_action_string(action.model_dump(exclude_none=True, exclude={"metadata"})),
+                     reward=reward, done=result.done, error=err)
             if result.done:
                 break
 
         final_score = float(result.observation.task_score)
         success = final_score >= 0.6
 
-    except Exception:
+    except Exception as e:
         success = False
         if steps_taken == 0:
             steps_taken = 1
@@ -408,13 +400,145 @@ async def run_task(task_name: str) -> None:
             await env.close()
         except Exception:
             pass
-
         log_end(success=success, steps=steps_taken, score=final_score, rewards=rewards)
+
+    return {
+        "task": task_name,
+        "score": final_score,
+        "success": success,
+        "steps": steps_taken,
+        "rewards": rewards,
+        "tickets": ticket_results,
+    }
+
+
+def _bar(value: float, width: int = 20) -> str:
+    filled = int(round(value * width))
+    return "█" * filled + "░" * (width - filled)
+
+
+def _score_color(score: float) -> str:
+    if score >= 0.75: return "\033[92m"   # green
+    if score >= 0.5:  return "\033[93m"   # yellow
+    return "\033[91m"                      # red
+
+
+def _priority_icon(p: str) -> str:
+    return {"urgent": "🔴", "high": "🟠", "medium": "🟡", "low": "🟢"}.get(str(p).lower(), "⚪")
+
+
+def _team_icon(t: str) -> str:
+    return {"rescue": "🚁", "medical": "🏥", "utilities": "⚡", "shelter": "🏠",
+            "logistics": "🚛", "general": "📋"}.get(str(t).lower(), "📋")
+
+
+def print_full_report(results: List[dict]) -> None:
+    RESET  = "\033[0m"
+    BOLD   = "\033[1m"
+    CYAN   = "\033[96m"
+    GREEN  = "\033[92m"
+    YELLOW = "\033[93m"
+    RED    = "\033[91m"
+    DIM    = "\033[2m"
+    WHITE  = "\033[97m"
+
+    W = 70
+    line = "═" * W
+    thin = "─" * W
+
+    print(f"\n{CYAN}{BOLD}{'╔' + line + '╗'}{RESET}")
+    title = "DISASTER RESPONSE — INFERENCE REPORT"
+    pad = (W - len(title)) // 2
+    print(f"{CYAN}{BOLD}║{' ' * pad}{title}{' ' * (W - pad - len(title))}║{RESET}")
+    print(f"{CYAN}{BOLD}{'╚' + line + '╝'}{RESET}")
+
+    model_short = MODEL_NAME.split("/")[-1] if "/" in MODEL_NAME else MODEL_NAME
+    print(f"\n  {DIM}Model  :{RESET} {WHITE}{model_short}{RESET}")
+    print(f"  {DIM}Env    :{RESET} {WHITE}{OPENENV_BASE_URL}{RESET}")
+    print(f"  {DIM}Tasks  :{RESET} {WHITE}{', '.join(TASKS)}{RESET}\n")
+
+    overall_scores = []
+
+    for r in results:
+        task      = r["task"].upper()
+        score     = r["score"]
+        steps     = r["steps"]
+        rewards   = r["rewards"]
+        tickets   = r["tickets"]
+        success   = r["success"]
+        sc        = _score_color(score)
+        status    = f"{GREEN}✅ PASS{RESET}" if success else f"{RED}❌ FAIL{RESET}"
+        overall_scores.append(score)
+
+        print(f"{BOLD}{CYAN}  ┌── {task} DIFFICULTY {thin[:W-15]}┐{RESET}")
+        print(f"  │  Score   {sc}{BOLD}{score:.3f}{RESET}  {sc}{_bar(score)}{RESET}  {status}")
+        print(f"  │  Steps   {steps}  │  Tickets closed: {len(tickets)}")
+
+        if rewards:
+            avg_r = sum(rewards) / len(rewards)
+            max_r = max(rewards)
+            min_r = min(rewards)
+            print(f"  │  Rewards  avg={avg_r:.3f}  max={max_r:.3f}  min={min_r:.3f}")
+
+        if tickets:
+            print(f"  │")
+            print(f"  │  {DIM}{'ID':<10} {'TEAM':<12} {'PRIORITY':<10} {'SCORE':>6}  BAR{RESET}")
+            print(f"  │  {DIM}{thin[:55]}{RESET}")
+            for t in tickets:
+                tid   = str(t.get("id", "?"))
+                team  = str(t.get("team") or "?")
+                pri   = str(t.get("priority") or "?")
+                tscore= float(t.get("score") or 0.0)
+                tsc   = _score_color(tscore)
+                ticon = _team_icon(team)
+                picon = _priority_icon(pri)
+                bar   = _bar(tscore, 14)
+                print(f"  │  {tid:<10} {ticon} {team:<10} {picon} {pri:<8} {tsc}{tscore:.2f}{RESET}  {tsc}{bar}{RESET}")
+
+        print(f"{BOLD}{CYAN}  └{'─' * (W+1)}┘{RESET}\n")
+
+    # ── Overall summary ──────────────────────────────────────────────────
+    if overall_scores:
+        avg = sum(overall_scores) / len(overall_scores)
+        asc = _score_color(avg)
+        print(f"{BOLD}{WHITE}  {'━' * W}{RESET}")
+        print(f"  {BOLD}OVERALL AVG SCORE  {asc}{BOLD}{avg:.3f}{RESET}  {asc}{_bar(avg, 30)}{RESET}")
+
+        # Load baseline for comparison
+        try:
+            with open("results/baseline_agent_metrics.json") as f:
+                baseline = json.load(f)
+            b_avg = baseline.get("avg_score", 0.0)
+            delta = avg - b_avg
+            delta_str = f"{'+' if delta >= 0 else ''}{delta:.3f}"
+            delta_color = GREEN if delta >= 0 else RED
+            print(f"  {BOLD}BASELINE AVG SCORE {DIM}{b_avg:.3f}{RESET}")
+            print(f"  {BOLD}DELTA vs BASELINE  {delta_color}{BOLD}{delta_str}{RESET}")
+        except Exception:
+            pass
+
+        print(f"  {BOLD}{'━' * W}{RESET}\n")
+
+    # ── Save JSON report ─────────────────────────────────────────────────
+    import datetime, os
+    os.makedirs("results", exist_ok=True)
+    report = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "model": MODEL_NAME,
+        "tasks": results,
+        "avg_score": sum(overall_scores) / len(overall_scores) if overall_scores else 0.0,
+    }
+    out_path = "results/inference_report.json"
+    with open(out_path, "w") as f:
+        json.dump(report, f, indent=2)
+    print(f"  {DIM}Full report saved → {out_path}{RESET}\n")
 
 
 async def main() -> None:
+    results = []
     for task in TASKS:
-        await run_task(task)
+        results.append(await run_task_tracked(task))
+    print_full_report(results)
 
 
 if __name__ == "__main__":
