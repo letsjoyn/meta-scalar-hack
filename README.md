@@ -275,10 +275,10 @@ python -m uvicorn server.app:app --host 0.0.0.0 --port 8000
 # → http://localhost:8000/ui/
 ```
 
-### 2. Run the Agent (against the live HF Space)
+### 2. Run the Agent — Using the Free HF Router (Qwen 72B)
 
-```bash
-# Windows PowerShell
+```powershell
+# Windows PowerShell — against the live HF Space
 $env:OPENENV_BASE_URL = "https://joynnayvedya-disaster-response-openenv.hf.space"
 $env:API_BASE_URL     = "https://router.huggingface.co/v1"
 $env:MODEL_NAME       = "Qwen/Qwen2.5-72B-Instruct"
@@ -287,15 +287,24 @@ $env:HF_TOKEN         = "hf_YOUR_TOKEN"
 py inference.py
 ```
 
-### 3. Run the Agent with Your Own TGI Endpoint (uses trained model)
+### 3. Run the Agent — Using the Trained V2 Model (Dedicated TGI Endpoint)
 
-```bash
-$env:API_BASE_URL = "https://YOUR_ENDPOINT.endpoints.huggingface.cloud/v1"
-$env:MODEL_NAME   = "tgi"
-$env:HF_TOKEN     = "hf_YOUR_TOKEN"
+This uses the fine-tuned `disaster-response-v2` model via a dedicated HF Inference Endpoint:
+
+```powershell
+$env:OPENENV_BASE_URL = "https://joynnayvedya-disaster-response-openenv.hf.space"
+$env:API_BASE_URL     = "https://gdfzs8jd2ezi6rjh.us-east-1.aws.endpoints.huggingface.cloud/v1"
+$env:MODEL_NAME       = "tgi"
+$env:HF_TOKEN         = "hf_YOUR_TOKEN"
 
 py inference.py
 ```
+
+> **To run against the local server** (faster, no network latency):
+> ```powershell
+> $env:OPENENV_BASE_URL = "http://localhost:8000"
+> py inference.py
+> ```
 
 ### 4. Validate OpenEnv Compliance
 
