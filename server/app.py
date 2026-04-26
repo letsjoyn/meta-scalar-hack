@@ -189,6 +189,68 @@ async def ui_bootstrap(task: str = "all"):
     }
 
 
+from fastapi import BackgroundTasks
+
+async def simulate_demo_run(task_name: str):
+    """Simulates a perfect agent run to show off the dashboard."""
+    # This imports internally to avoid circular deps or startup issues
+    try:
+        from .support_ops_environment import SupportOpsEnvironment
+        from ..tasks import TASKS
+        from ..models import SupportOpsAction
+    except ImportError:
+        from server.support_ops_environment import SupportOpsEnvironment
+        from tasks import TASKS
+        from models import SupportOpsAction
+
+    env = SupportOpsEnvironment(task_name=task_name)
+    # We need to find the session in the app state to update the live payload
+    # For demo purposes, we'll just broadcast updates directly using the manager
+    
+    task_spec = TASKS.get(task_name, TASKS["easy"])
+    
+    await manager.broadcast(json.dumps({
+        "type": "update", 
+        "payload": {
+            "score": 0.0,
+            "resources": 100,
+            "incidents": [_build_live_payload(env)["incidents"][0]] # Start state
+        }
+    }))
+    
+    for ticket in task_spec.tickets:
+        tid = ticket.ticket_id
+        
+        # 1. Classify
+        await asyncio.sleep(0.8)
+        env.step(SupportOpsAction(action_type="classify", ticket_id=tid, predicted_team=ticket.gold_team))
+        await manager.broadcast(json.dumps({"type": "update", "payload": _build_live_payload(env)}))
+        
+        # 2. Set Priority
+        await asyncio.sleep(0.6)
+        env.step(SupportOpsAction(action_type="set_priority", ticket_id=tid, predicted_priority=ticket.gold_priority))
+        await manager.broadcast(json.dumps({"type": "update", "payload": _build_live_payload(env)}))
+        
+        # 3. Draft
+        await asyncio.sleep(0.7)
+        env.step(SupportOpsAction(action_type="draft_reply", ticket_id=tid, reply_text=f"Deploying {ticket.gold_team} team to coordinates. ETA 15 mins. Triage initiated."))
+        await manager.broadcast(json.dumps({"type": "update", "payload": _build_live_payload(env)}))
+        
+        # 4. Submit
+        await asyncio.sleep(1.0)
+        env.step(SupportOpsAction(action_type="submit_ticket", ticket_id=tid))
+        await manager.broadcast(json.dumps({"type": "update", "payload": _build_live_payload(env)}))
+
+    await manager.broadcast(json.dumps({"type": "update", "payload": _build_live_payload(env)}))
+
+
+@app.post("/ui/run-demo")
+async def run_demo(background_tasks: BackgroundTasks, task: str = "easy"):
+    print(f"[UI] Demo requested for task: {task}", flush=True)
+    background_tasks.add_task(simulate_demo_run, task)
+    return {"status": "demo_started"}
+
+
 app.mount(
     "/ui",
     StaticFiles(directory=os.path.join(os.path.dirname(__file__), "ui"), html=True),

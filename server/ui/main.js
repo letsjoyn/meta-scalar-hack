@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         autoFit: document.getElementById("auto-fit"),
         liveMode: document.getElementById("live-mode"),
         reloadBtn: document.getElementById("reload-btn"),
+        runDemoBtn: document.getElementById("run-demo-btn"),
         clearFeedBtn: document.getElementById("clear-feed-btn"),
         incidentList: document.getElementById("incident-list"),
         eventFeed: document.getElementById("event-feed"),
@@ -448,6 +449,23 @@ Respond ONLY in valid JSON (no markdown, no extra text):
             else { disconnectSocket(); elements.liveStatus.textContent = "Paused"; addFeedEntry("Live stream paused by operator", "warn"); }
         });
         elements.reloadBtn.addEventListener("click", () => loadBootstrap());
+        elements.runDemoBtn.addEventListener("click", async () => {
+            try {
+                addFeedEntry("Demo requested — starting simulated mission...", "info");
+                elements.runDemoBtn.disabled = true;
+                elements.runDemoBtn.textContent = "⌛ Demo Running...";
+                const res = await fetch(`/ui/run-demo?task=${encodeURIComponent(state.task)}`, { method: "POST" });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                setTimeout(() => {
+                    elements.runDemoBtn.disabled = false;
+                    elements.runDemoBtn.textContent = "🚀 Launch Live Demo";
+                }, 15000);
+            } catch (err) {
+                addFeedEntry(`Demo startup error: ${err.message}`, "error");
+                elements.runDemoBtn.disabled = false;
+                elements.runDemoBtn.textContent = "🚀 Launch Live Demo";
+            }
+        });
         elements.clearFeedBtn.addEventListener("click", () => {
             elements.eventFeed.innerHTML = "";
             addFeedEntry("Feed cleared by operator", "info");

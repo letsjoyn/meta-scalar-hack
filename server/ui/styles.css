@@ -188,6 +188,32 @@ body {
     font-weight: 600;
 }
 
+.actions button.btn-demo {
+    background: linear-gradient(135deg, #79f9b0, #2f945f);
+    color: #031109;
+    border: none;
+    box-shadow: 0 0 15px rgba(121, 249, 176, 0.4);
+    font-weight: 700;
+    padding: 0 16px;
+}
+
+.actions button.btn-demo:hover {
+    background: linear-gradient(135deg, #87f5b7, #37a86c);
+    box-shadow: 0 0 20px rgba(121, 249, 176, 0.6);
+    transform: translateY(-1px);
+}
+
+.actions button.btn-demo:active {
+    transform: translateY(0);
+}
+
+.actions button.btn-demo:disabled {
+    background: #1a2a26;
+    color: #4a6a5f;
+    box-shadow: none;
+    cursor: wait;
+}
+
 .actions button.ghost {
     background: #0b1311;
     color: var(--text);
