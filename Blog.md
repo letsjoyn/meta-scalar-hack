@@ -141,6 +141,7 @@ The heuristic baseline uses hand-crafted regex patterns—it's "brittle" but per
 We built a military-style tactical command center that updates in real-time via WebSocket as the agent processes tickets.
 
 **[▶️ Open the Command Center Live](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
+**[🎬 Watch the Agent Triage Live on YouTube](https://www.youtube.com/watch?v=0ldfDtNAILc)**
 
 - 🗺️ **OpenStreetMap** with live incident markers
 - ⚡ **ARIA** — AI Incident Analyst powered by Gemini
