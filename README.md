@@ -29,7 +29,7 @@ tags:
 [![HF Space](https://img.shields.io/badge/🤗%20HF%20Space-Live%20Environment-yellow?style=for-the-badge)](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
 [![Live Dashboard](https://img.shields.io/badge/🖥️%20Dashboard-Command%20Center-red?style=for-the-badge)](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)
 [![Trained Model](https://img.shields.io/badge/🧠%20Model-disaster--response--v2-blue?style=for-the-badge)](https://huggingface.co/joynnayvedya/disaster-response-v2)
-[![Open In Colab](https://img.shields.io/badge/📓%20Training-Open%20in%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/grpo_disaster_training%20(1).ipynb)
+[![Open In Colab](https://img.shields.io/badge/📓%20Training-Open%20in%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb)
 [![GitHub](https://img.shields.io/badge/💻%20GitHub-Source%20Code-black?style=for-the-badge&logo=github)](https://github.com/letsjoyn/meta-scalar-hack)
 
 ---
@@ -47,7 +47,7 @@ tags:
 | 🤗 **HF Space (Live Environment)** | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
 | 🖥️ **Live Tactical Dashboard** | [Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all) |
 | 🧠 **Trained Model (v2)** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
-| 📓 **Training Notebook (Colab)** | [Open in Google Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/grpo_disaster_training%20(1).ipynb) |
+| 📓 **Training Notebook (Colab)** | [Open in Google Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb) |
 | 📰 **Mini Blog / Write-up** | *(link coming — add your HF blog URL here)* |
 | 💻 **GitHub Source** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
 
@@ -325,7 +325,7 @@ meta-scalar-hack/
 ├── inference.py                     # Agent runner (heuristic + trained model)
 ├── client.py                        # OpenEnv client wrapper
 ├── smoke_test.py                    # No-API-key environment validation
-├── grpo_disaster_training (1).ipynb # Full GRPO training notebook (Colab-ready)
+├── notebook99e7520250.ipynb          # Full GRPO v2 training notebook (Colab-ready)
 ├── plots/                           # Training result plots
 │   ├── grpo_reward_curve.png
 │   ├── epoch_comparison.png
