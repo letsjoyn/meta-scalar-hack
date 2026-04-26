@@ -246,9 +246,11 @@ async def simulate_demo_run(task_name: str):
 
 @app.post("/ui/run-demo")
 async def run_demo(background_tasks: BackgroundTasks, task: str = "easy"):
-    print(f"[UI] Demo requested for task: {task}", flush=True)
-    background_tasks.add_task(simulate_demo_run, task)
-    return {"status": "demo_started"}
+    # If "all" is selected, we run the "easy" demo as the default
+    demo_task = task if task in ["easy", "medium", "hard"] else "easy"
+    print(f"[UI] Demo requested for task: {task} (Running: {demo_task})", flush=True)
+    background_tasks.add_task(simulate_demo_run, demo_task)
+    return {"status": "demo_started", "task_running": demo_task}
 
 
 app.mount(
