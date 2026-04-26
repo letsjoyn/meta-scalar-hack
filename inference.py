@@ -243,7 +243,8 @@ def _model_action(client: Optional[OpenAI], task_name: str, objective: str, tick
             stream=False,
         )
         return (response.choices[0].message.content or "").strip()
-    except Exception:
+    except Exception as e:
+        print(f"[MODEL_ERROR] {type(e).__name__}: {e}", flush=True)
         return "{}"
 
 
@@ -332,6 +333,24 @@ async def run_task_tracked(task_name: str) -> dict:
             action = _policy_action(client, obs, ticket_stage)
             result = await env.step(action)
 
+            # Capture ticket results for report — read directly from observation
+            try:
+                obs_dict = result.observation.model_dump()
+                for inc in obs_dict.get("inbox_snapshot", []):
+                    if inc.get("submitted"):
+                        tid = inc.get("ticket_id") or inc.get("id")
+                        if tid and not any(t["id"] == tid for t in ticket_results):
+                            ticket_results.append({
+                                "id": tid,
+                                "message": inc.get("message", ""),
+                                "priority": inc.get("predicted_priority") or "medium",
+                                "team": inc.get("predicted_team"),
+                                "score": float(inc.get("ticket_score") or 0.0),
+                                "submitted": True,
+                            })
+            except Exception:
+                pass
+
             # UI push (best-effort)
             try:
                 import urllib.request as _ur, json as _json
@@ -368,12 +387,6 @@ async def run_task_tracked(task_name: str) -> dict:
                         ), timeout=2.0)
                     except Exception:
                         pass
-                # Capture ticket results for report
-                for inc in incidents:
-                    if inc["submitted"]:
-                        existing = next((t for t in ticket_results if t["id"] == inc["id"]), None)
-                        if not existing:
-                            ticket_results.append(inc)
             except Exception:
                 pass
 

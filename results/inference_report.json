@@ -1,109 +1,99 @@
 {
-  "timestamp": "2026-04-26T08:00:08.615214",
-  "model": "joynnayvedya/disaster-response-trained",
+  "timestamp": "2026-04-26T08:59:34.172561",
+  "model": "Qwen/Qwen2.5-72B-Instruct",
   "tasks": [
     {
       "task": "easy",
-      "score": 0.704,
+      "score": 0.641,
       "success": true,
       "steps": 20,
       "rewards": [
         0.35,
         0.3,
-        0.7,
-        0.9279999999999999,
+        0.4,
+        0.8560000000000001,
         0.35,
         0.12,
-        0.7,
-        0.796,
+        0.4,
+        0.724,
         0.35,
-        0.12,
-        0.7,
-        0.796,
-        0.05,
         0.12,
         0.25,
-        0.36800000000000005,
+        0.688,
+        0.05,
+        0.12,
+        0.4,
+        0.404,
         0.35,
         0.3,
-        0.7,
-        0.9279999999999999
+        0.55,
+        0.8920000000000001
       ],
       "tickets": [
         {
           "id": "E-101",
           "message": "Two apartment blocks report trapped residents after a flash flood in Ward-7. Stairwells are submerged and power is out.",
           "priority": "urgent",
-          "lat": 29.7604,
-          "lon": -95.3698,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.9099999999999999
+          "score": 0.82,
+          "submitted": true
         },
         {
           "id": "E-102",
           "message": "Shelter-12 has 180 evacuees and reports water shortage by tonight.",
           "priority": "urgent",
-          "lat": 29.7589,
-          "lon": -95.3677,
-          "submitted": true,
           "team": "shelter",
-          "score": 0.745
+          "score": 0.655,
+          "submitted": true
         },
         {
           "id": "E-103",
           "message": "Transformer blast left 3 neighborhoods without electricity and traffic signals are down.",
           "priority": "medium",
-          "lat": 34.0522,
-          "lon": -118.2437,
-          "submitted": true,
           "team": "utilities",
-          "score": 0.745
+          "score": 0.61,
+          "submitted": true
         },
         {
           "id": "E-104",
           "message": "Minor earthquake caused a gas line crack in a residential area. No injuries reported yet but residents smell gas and are self-evacuating.",
           "priority": "urgent",
-          "lat": 34.0567,
-          "lon": -118.2456,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.21000000000000002
+          "score": 0.255,
+          "submitted": true
         },
         {
           "id": "E-105",
           "message": "A school bus with 35 children is stranded on a flooded road. Water level is rising slowly but children are safe inside for now.",
           "priority": "urgent",
-          "lat": 29.75,
-          "lon": -95.38,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.9099999999999999
+          "score": 0.865,
+          "submitted": true
         }
       ]
     },
     {
       "task": "medium",
-      "score": 0.683,
+      "score": 0.656,
       "success": true,
       "steps": 20,
       "rewards": [
         0.35,
         0.3,
-        0.7,
-        0.9279999999999999,
+        0.55,
+        0.8920000000000001,
         0.35,
         0.12,
-        0.5499999999999999,
-        0.76,
+        0.4,
+        0.724,
         0.35,
         0.3,
         0.25,
         0.8200000000000001,
         0.05,
         0.3,
-        0.25,
-        0.5,
+        0.1,
+        0.46399999999999997,
         0.35,
         0.12,
         0.4,
@@ -114,76 +104,66 @@
           "id": "M-201",
           "message": "Highway pileup after landslide: 40+ injured, ambulance lanes partially blocked.",
           "priority": "urgent",
-          "lat": 40.7128,
-          "lon": -74.006,
-          "submitted": true,
           "team": "medical",
-          "score": 0.9099999999999999
+          "score": 0.865,
+          "submitted": true
         },
         {
           "id": "M-202",
           "message": "Bridge approach is cracked; evacuation buses need reroute planning in 30 minutes.",
           "priority": "urgent",
-          "lat": 40.7158,
-          "lon": -74.003,
-          "submitted": true,
           "team": "logistics",
-          "score": 0.7
+          "score": 0.655,
+          "submitted": true
         },
         {
           "id": "M-203",
           "message": "Community clinic lost cold-chain power; temperature-sensitive medicines at risk.",
           "priority": "high",
-          "lat": 35.6895,
-          "lon": 139.6917,
-          "submitted": true,
           "team": "utilities",
-          "score": 0.7749999999999999
+          "score": 0.7749999999999999,
+          "submitted": true
         },
         {
           "id": "M-204",
           "message": "Gas leak detected near the district hospital. Staff report fumes inside the emergency ward. 60 patients currently admitted.",
           "priority": "urgent",
-          "lat": 35.685,
-          "lon": 139.7,
-          "submitted": true,
           "team": "medical",
-          "score": 0.375
+          "score": 0.32999999999999996,
+          "submitted": true
         },
         {
           "id": "M-205",
           "message": "Flood waters have cut off two villages. Residents are on rooftops and a makeshift shelter at the school is at double capacity with no clean drinking water.",
           "priority": "high",
-          "lat": 19.076,
-          "lon": 72.8777,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.655
+          "score": 0.655,
+          "submitted": true
         }
       ]
     },
     {
       "task": "hard",
-      "score": 0.6597866666666666,
+      "score": 0.6248666666666667,
       "success": true,
       "steps": 20,
       "rewards": [
         0.35,
         0.3,
-        0.7,
-        0.7921066666666667,
+        0.4,
+        0.7335466666666666,
         0.35,
         0.3,
-        0.7,
-        0.7921066666666667,
+        0.4,
+        0.7335466666666666,
         0.05,
         0.3,
-        0.25,
-        0.5,
+        0.4,
+        0.536,
         0.35,
         0.3,
-        0.5499999999999999,
-        0.7628266666666668,
+        0.25,
+        0.7042666666666666,
         0.35,
         0.3,
         0.7,
@@ -194,54 +174,44 @@
           "id": "H-301",
           "message": "Dam spillway overflow warning: downstream villages have less than 90 minutes to evacuate safely.",
           "priority": "urgent",
-          "lat": 27.1751,
-          "lon": 78.0421,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.7401333333333333
+          "score": 0.6669333333333333,
+          "submitted": true
         },
         {
           "id": "H-302",
           "message": "Post-quake aftershocks collapsed a district hospital wing; patients require transfer while roads remain unstable.",
           "priority": "urgent",
-          "lat": 27.1781,
-          "lon": 78.0451,
-          "submitted": true,
           "team": "medical",
-          "score": 0.7401333333333333
+          "score": 0.6669333333333333,
+          "submitted": true
         },
         {
           "id": "H-303",
           "message": "Three shelters exceed safe occupancy; severe weather returns by evening with limited buses and fuel.",
           "priority": "high",
-          "lat": -22.9068,
-          "lon": -43.1729,
-          "submitted": true,
           "team": "shelter",
-          "score": 0.375
+          "score": 0.42,
+          "submitted": true
         },
         {
           "id": "H-304",
           "message": "Chemical plant fire following the earthquake. Toxic plume moving toward a residential zone of 10,000 people. Wind shift expected in 2 hours.",
           "priority": "urgent",
-          "lat": -22.91,
-          "lon": -43.178,
-          "submitted": true,
           "team": "rescue",
-          "score": 0.7035333333333333
+          "score": 0.6303333333333333,
+          "submitted": true
         },
         {
           "id": "H-305",
           "message": "Main communication tower offline after storm. Satellite relay is intermittent. All rescue and medical teams in the region are uncoordinated.",
           "priority": "urgent",
-          "lat": 39.9042,
-          "lon": 116.4074,
-          "submitted": true,
           "team": "utilities",
-          "score": 0.7401333333333333
+          "score": 0.7401333333333333,
+          "submitted": true
         }
       ]
     }
   ],
-  "avg_score": 0.6822622222222222
+  "avg_score": 0.6406222222222223
 }
