@@ -29,6 +29,7 @@ tags:
 [![HF Space](https://img.shields.io/badge/🤗%20HF%20Space-Live%20Environment-yellow?style=for-the-badge)](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv)
 [![Live Dashboard](https://img.shields.io/badge/🖥️%20Dashboard-Command%20Center-red?style=for-the-badge)](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)
 [![Trained Model](https://img.shields.io/badge/🧠%20Model-disaster--response--v2-blue?style=for-the-badge)](https://huggingface.co/joynnayvedya/disaster-response-v2)
+[![Blog Write-up](https://img.shields.io/badge/📝%20Write--up-Blog.md-success?style=for-the-badge)](Blog.md)
 [![Open In Colab](https://img.shields.io/badge/📓%20Training-Open%20in%20Colab-orange?style=for-the-badge&logo=googlecolab)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/Disaster_Response_Training.ipynb)
 [![GitHub](https://img.shields.io/badge/💻%20GitHub-Source%20Code-black?style=for-the-badge&logo=github)](https://github.com/letsjoyn/meta-scalar-hack)
 
