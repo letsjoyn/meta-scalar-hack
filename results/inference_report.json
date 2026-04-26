@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-26T08:59:34.172561",
-  "model": "Qwen/Qwen2.5-72B-Instruct",
+  "timestamp": "2026-04-26T10:44:16.804358",
+  "model": "tgi",
   "tasks": [
     {
       "task": "easy",
@@ -10,23 +10,23 @@
       "rewards": [
         0.35,
         0.3,
-        0.4,
-        0.8560000000000001,
+        0.25,
+        0.8200000000000001,
+        0.35,
+        0.12,
+        0.5499999999999999,
+        0.76,
         0.35,
         0.12,
         0.4,
         0.724,
-        0.35,
-        0.12,
-        0.25,
-        0.688,
         0.05,
         0.12,
-        0.4,
-        0.404,
+        0.25,
+        0.36800000000000005,
         0.35,
         0.3,
-        0.55,
+        0.5499999999999999,
         0.8920000000000001
       ],
       "tickets": [
@@ -35,7 +35,7 @@
           "message": "Two apartment blocks report trapped residents after a flash flood in Ward-7. Stairwells are submerged and power is out.",
           "priority": "urgent",
           "team": "rescue",
-          "score": 0.82,
+          "score": 0.7749999999999999,
           "submitted": true
         },
         {
@@ -43,7 +43,7 @@
           "message": "Shelter-12 has 180 evacuees and reports water shortage by tonight.",
           "priority": "urgent",
           "team": "shelter",
-          "score": 0.655,
+          "score": 0.7,
           "submitted": true
         },
         {
@@ -51,7 +51,7 @@
           "message": "Transformer blast left 3 neighborhoods without electricity and traffic signals are down.",
           "priority": "medium",
           "team": "utilities",
-          "score": 0.61,
+          "score": 0.655,
           "submitted": true
         },
         {
@@ -59,7 +59,7 @@
           "message": "Minor earthquake caused a gas line crack in a residential area. No injuries reported yet but residents smell gas and are self-evacuating.",
           "priority": "urgent",
           "team": "rescue",
-          "score": 0.255,
+          "score": 0.21000000000000002,
           "submitted": true
         },
         {
@@ -74,13 +74,13 @@
     },
     {
       "task": "medium",
-      "score": 0.656,
+      "score": 0.665,
       "success": true,
       "steps": 20,
       "rewards": [
         0.35,
         0.3,
-        0.55,
+        0.5499999999999999,
         0.8920000000000001,
         0.35,
         0.12,
@@ -92,8 +92,8 @@
         0.8200000000000001,
         0.05,
         0.3,
-        0.1,
-        0.46399999999999997,
+        0.25,
+        0.5,
         0.35,
         0.12,
         0.4,
@@ -129,7 +129,7 @@
           "message": "Gas leak detected near the district hospital. Staff report fumes inside the emergency ward. 60 patients currently admitted.",
           "priority": "urgent",
           "team": "medical",
-          "score": 0.32999999999999996,
+          "score": 0.375,
           "submitted": true
         },
         {
@@ -144,22 +144,22 @@
     },
     {
       "task": "hard",
-      "score": 0.6248666666666667,
+      "score": 0.6012266666666666,
       "success": true,
       "steps": 20,
       "rewards": [
         0.35,
         0.3,
-        0.4,
-        0.7335466666666666,
+        0.25,
+        0.7042666666666666,
         0.35,
         0.3,
-        0.4,
-        0.7335466666666666,
+        0.25,
+        0.7042666666666666,
         0.05,
         0.3,
-        0.4,
-        0.536,
+        0.25,
+        0.5,
         0.35,
         0.3,
         0.25,
@@ -175,7 +175,7 @@
           "message": "Dam spillway overflow warning: downstream villages have less than 90 minutes to evacuate safely.",
           "priority": "urgent",
           "team": "rescue",
-          "score": 0.6669333333333333,
+          "score": 0.6303333333333333,
           "submitted": true
         },
         {
@@ -183,7 +183,7 @@
           "message": "Post-quake aftershocks collapsed a district hospital wing; patients require transfer while roads remain unstable.",
           "priority": "urgent",
           "team": "medical",
-          "score": 0.6669333333333333,
+          "score": 0.6303333333333333,
           "submitted": true
         },
         {
@@ -191,7 +191,7 @@
           "message": "Three shelters exceed safe occupancy; severe weather returns by evening with limited buses and fuel.",
           "priority": "high",
           "team": "shelter",
-          "score": 0.42,
+          "score": 0.375,
           "submitted": true
         },
         {
@@ -213,5 +213,5 @@
       ]
     }
   ],
-  "avg_score": 0.6406222222222223
+  "avg_score": 0.6357422222222222
 }
