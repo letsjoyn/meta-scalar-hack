@@ -171,7 +171,7 @@ Most RL environments get gamed within 100 steps. We built explicit defenses:
 
 We trained **Qwen2.5-7B-Instruct** using **GRPO** (Group Relative Policy Optimization) via Hugging Face TRL + Unsloth on a Google Colab T4 GPU.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/grpo_disaster_training%20(1).ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/notebook99e7520250.ipynb)
 
 ### Training Setup
 
@@ -211,19 +211,19 @@ We observed **sparse reward collapse** — a known RL failure mode where a small
 
 **Reward Curve** — Training reward across all 135 steps across 3 stages:
 
-![Reward Curve](plots/grpo_reward_curve.png)
+![Reward Curve](https://raw.githubusercontent.com/letsjoyn/meta-scalar-hack/main/plots/grpo_reward_curve.png)
 
 **Epoch Comparison** — Average reward per training epoch showing learning progression:
 
-![Epoch Comparison](plots/epoch_comparison.png)
+![Epoch Comparison](https://raw.githubusercontent.com/letsjoyn/meta-scalar-hack/main/plots/epoch_comparison.png)
 
 **Before vs After** — Direct behavioral comparison of the model's outputs before and after GRPO training:
 
-![Before vs After](plots/before_after_comparison.png)
+![Before vs After](https://raw.githubusercontent.com/letsjoyn/meta-scalar-hack/main/plots/before_after_comparison.png)
 
 **Training Parameters** — Full hyperparameter configuration used for the final v2 run:
 
-![Training Parameters](plots/training_params.png)
+![Training Parameters](https://raw.githubusercontent.com/letsjoyn/meta-scalar-hack/main/plots/training_params.png)
 
 ---
 
@@ -242,6 +242,8 @@ We observed **sparse reward collapse** — a known RL failure mode where a small
 ## 🖥️ Live Tactical Command Dashboard
 
 **[▶️ Open the Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all)**
+
+![Architecture](https://raw.githubusercontent.com/letsjoyn/meta-scalar-hack/main/plots/architecture_diagram.png)
 
 We built a military-style tactical dashboard that updates **in real-time via WebSocket** as the agent processes tickets.
 
