@@ -169,7 +169,14 @@ We built a military-style tactical command center that updates in real-time via 
 | 🖥️ **Tactical Dashboard** | [Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all) |
 | 🧠 **Trained Model** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
 | 📓 **Training Notebook** | [Open in Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/Disaster_Response_Training.ipynb) |
+| 📊 **Training Metrics & Logs** | [results/](results/) |
 | 💻 **GitHub** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
+
+---
+
+## ⭐️ Final Note
+
+If you enjoyed exploring this environment, please consider leaving a ⭐ on the [OpenEnv GitHub](https://github.com/ScalarHQ/openenv). We've already added ours!
 
 ---
 

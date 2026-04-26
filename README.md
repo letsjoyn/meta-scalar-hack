@@ -50,7 +50,14 @@ tags:
 | 🧠 **Trained Model (v2)** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
 | 📓 **Training Notebook (Colab)** | [Open in Google Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/Disaster_Response_Training.ipynb) |
 | 📝 **Write-up / Blog** | [Blog.md](Blog.md) |
+| 📊 **Training Metrics & Logs** | [results/](results/) |
 | 💻 **GitHub Source** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
+
+---
+
+## ⭐️ Acknowledgments
+
+Huge thanks to the **OpenEnv** team for the incredible framework. This environment was built entirely on top of the OpenEnv core, and we’ve officially starred the repository to support the future of agentic RL! 
 
 ---
 
