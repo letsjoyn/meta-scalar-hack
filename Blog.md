@@ -160,6 +160,19 @@ We built a military-style tactical command center that updates in real-time via 
 
 ---
 
+## 🔗 Submission Links
+
+| Resource | URL |
+|----------|-----|
+| 🎬 **Demo Video** | [Watch on YouTube →](https://www.youtube.com/watch?v=0ldfDtNAILc) |
+| 🤗 **HF Space** | [joynnayvedya/disaster-response-openenv](https://huggingface.co/spaces/joynnayvedya/disaster-response-openenv) |
+| 🖥️ **Tactical Dashboard** | [Command Center →](https://joynnayvedya-disaster-response-openenv.hf.space/ui/?task=all) |
+| 🧠 **Trained Model** | [joynnayvedya/disaster-response-v2](https://huggingface.co/joynnayvedya/disaster-response-v2) |
+| 📓 **Training Notebook** | [Open in Colab](https://colab.research.google.com/github/letsjoyn/meta-scalar-hack/blob/main/Disaster_Response_Training.ipynb) |
+| 💻 **GitHub** | [letsjoyn/meta-scalar-hack](https://github.com/letsjoyn/meta-scalar-hack) |
+
+---
+
 *Built by the Meta-Scalar team for the 2026 Grand Finale, Bangalore.*
 
 *Every scenario is based on a real disaster. Every reward signal is designed to be unhackable.*
